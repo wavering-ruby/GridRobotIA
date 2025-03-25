@@ -1,14 +1,21 @@
-import tkinter as tk
+import pygame
 
-root = tk.Tk()
-canvas = tk.Canvas(root, width=500, height=500)
-canvas.pack()
+pygame.init()
+screen = pygame.display.set_mode((500, 500))
+clock = pygame.time.Clock()
 
-cell_size = 50  # Tamanho das células
+running = True
+while running:
+    screen.fill((255, 255, 255))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-for i in range(0, 500, cell_size):
-    for j in range(0, 500, cell_size):
-        # color = "#ADD8E6" if (i // cell_size + j // cell_size) % 2 == 0 else "#FFFFFF"
-        canvas.create_rectangle(i, j, i + cell_size, j + cell_size, fill="#FFFFFF", outline="black")
+    for i in range(0, 500, 50):
+        pygame.draw.line(screen, (0, 0, 0), (i, 0), (i, 500))
+        pygame.draw.line(screen, (0, 0, 0), (0, i), (500, i))
 
-root.mainloop()
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
