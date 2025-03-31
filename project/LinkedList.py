@@ -1,4 +1,4 @@
-from node import Node 
+from Node import Node
 
 class listaDEnc(object):
     head = None

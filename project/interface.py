@@ -1,8 +1,8 @@
 import pygame
-from principalBuscaSemPesosGrid import Gera_Problema
-from buscaGridNP import buscaGridNP
-from principalBuscaSemPesosGrid import Get_Origin
-from principalBuscaSemPesosGrid import Get_Destiny
+from project.GridSearchNoWeight import Gera_Problema
+from project.GridSearch import buscaGridNP
+from project.GridSearchNoWeight import Get_Origin
+from project.GridSearchNoWeight import Get_Destiny
 import random
 
 def move_character_with_image(screen, grid, current_pos, target_x, target_y, cell_size, character_image):
