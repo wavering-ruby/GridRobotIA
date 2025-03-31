@@ -88,30 +88,38 @@ class listaDEnc(object):
         return str1
     
     # EXIBE O CAMINHO ENCONTRADO
-    def exibeCaminho(self):
+    def ShowPath(self):
         
         atual = self.tail
-        caminho = []
+        
+        path = []
         
         while atual.pai is not None:
-            caminho.append(atual.estado)
+            path.append(atual.estado)
             atual = atual.pai
             
-        caminho.append(atual.estado)
-        caminho = caminho[::-1]
-        return caminho
+        path.append(atual.estado)
+        
+        path = path[::-1]
+        
+        return path
     
     # EXIBE O CAMINHO ENCONTRADO (BIDIRECIONAL)
-    def exibeCaminho1(self,valor):
+    def ShowPath2(self, valor):
                 
         atual = self.head
+        
         while atual.estado != valor:
             atual = atual.proximo
     
-        caminho = []
+        path = []
+        
         atual = atual.pai
+        
         while atual.pai is not None:
-            caminho.append(atual.estado)
+            path.append(atual.estado)
             atual = atual.pai
-        caminho.append(atual.estado)
-        return caminho
+            
+        path.append(atual.estado)
+        
+        return path

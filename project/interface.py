@@ -60,7 +60,7 @@ def move_character_with_image(screen, grid, current_pos, target_x, target_y, cel
 sol = buscaGridNP()
 caminho = []
 
-person_pos = Get_Origin();
+person_pos = (1, 0)  # Posição inicial do personagem
 
 pygame.init()
 screen = pygame.display.set_mode((500, 500), pygame.RESIZABLE)
