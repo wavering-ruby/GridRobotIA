@@ -1,4 +1,4 @@
-from project.LinkedList import listaDEnc
+from LinkedList import listaDEnc
 
 class buscaGridNP(object):
     
