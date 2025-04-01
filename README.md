@@ -11,16 +11,16 @@
 
 The chosen theme to the realization of this project it's Navigation of a Robot, consisting guiding a robot inside a warehouse to carry packeges from origin (A) to the destiny (B), using the minitum time possible, seeing routes and deviating from collision.
 
-# 1. Environment Modeling
+## 1. Environment Modeling
 
 The environment of the movimentation of the robot it's represented by a graph or a grid. Each cell of the grid or node of a graph represents one position of the space.
 
 The obstacles is marked as inacessible cells or nodes.
 
-# 2. Definition of the Origin and Destiny
+## 2. Definition of the Origin and Destiny
 
 The robot starts on a initial point (initial node or cell) and needs to find a route to the objective point (final node or cell).
 
-# 3. Costs Function
+## 3. Costs Function
 
 <More Soon...>
