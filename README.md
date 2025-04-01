@@ -19,4 +19,8 @@ The obstacles is marked as inacessible cells or nodes.
 
 # 2. Definition of the Origin and Destiny
 
-The robot starts on a initial point e need's to find a route to the final point (destiny)
+The robot starts on a initial point (initial node or cell) and needs to find a route to the objective point (final node or cell).
+
+# 3. Costs Function
+
+<More Soon...>
