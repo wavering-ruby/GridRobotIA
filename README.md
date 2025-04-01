@@ -10,3 +10,7 @@
 # Project's Objetive
 
 The chosen theme to the realization of this project it's Navigation of a Robot, consisting guiding a robot inside a warehouse to carry packeges from origin (A) to the destiny (B), using the minitum time possible, seeing routes and deviating from collision.
+
+# Environment Modeling
+
+The environment of the movimentation of the robot it's represented by a graph or a grid. Each cell of the grid or node of a graph represents one position of the space.
