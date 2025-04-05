@@ -104,6 +104,13 @@ class listaDEnc:
         return path
 
 class PathFinder:
+    def draw_button(self, text, rect, font):
+        pygame.draw.rect(self.screen, (70, 70, 70), rect, border_radius=8)
+        pygame.draw.rect(self.screen, (200, 200, 200), rect, 2, border_radius=8)
+        label = font.render(text, True, (255, 255, 255))
+        label_rect = label.get_rect(center=(rect[0]+rect[2]//2, rect[1]+rect[3]//2))
+        self.screen.blit(label, label_rect)
+    
     def __init__(self, grid_size=(10, 10), obstacles=20):
         # Configurações da grid
         self.nx, self.ny = grid_size
@@ -114,7 +121,10 @@ class PathFinder:
         
         # Configurações do pygame
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 800), pygame.RESIZABLE)
+        self.menu_width = 200
+        self.grid_size_pixels = 600
+        self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+
         pygame.display.set_caption("Path Finding Animation")
         self.clock = pygame.time.Clock()
         
@@ -271,6 +281,22 @@ class PathFinder:
         info_text = f"Path length: {len(self.path)} | Press R to reset"
         text_surface = font.render(info_text, True, (255, 255, 255))
         self.screen.blit(text_surface, (10, 10))
+        
+        # Desenha o menu lateral
+        menu_x = self.grid_size_pixels
+        pygame.draw.rect(self.screen, (30, 30, 30), (menu_x, 0, self.menu_width, self.grid_size_pixels))
+
+        # Títulos e botões
+        font = pygame.font.SysFont(None, 28)
+        title = font.render("MENU", True, (255, 255, 255))
+        self.screen.blit(title, (menu_x + 60, 20))
+
+        button_font = pygame.font.SysFont(None, 24)
+
+        # Botões
+        self.draw_button("Reset Grid", (menu_x + 20, 80, 160, 40), button_font)
+        self.draw_button("Novo A*", (menu_x + 20, 140, 160, 40), button_font)
+        self.draw_button("Fechar", (menu_x + 20, 200, 160, 40), button_font)
     
     def run(self):
         """Loop principal"""
@@ -282,8 +308,22 @@ class PathFinder:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
-                    elif event.key == pygame.K_r:  # Reinicia com nova grid
+                    elif event.key == pygame.K_r:
                         self.reset_grid()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    # Verifica cliques nos botões do menu
+                    if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
+                        if 80 <= my <= 120:
+                            self.reset_grid()
+                        elif 140 <= my <= 180:
+                            self.find_path()
+                            self.character_pos = list(self.start_pos)
+                            self.current_segment = 0
+                            self.last_move_time = pygame.time.get_ticks()
+                        elif 200 <= my <= 240:
+                            running = False
+
             
             # Atualiza animação
             self.update_animation()
