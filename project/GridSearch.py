@@ -1,7 +1,6 @@
 from LinkedList import listaDEnc
 
 class buscaGridNP(object):
-    
     # SUCESSORES PARA GRID (LISTA DE ADJACENCIAS)
     def sucessores(self,st,nx,ny,mapa):
         
