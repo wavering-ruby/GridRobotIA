@@ -141,11 +141,15 @@ class PathFinder:
         
         # Criando dropdown
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list=['Fácil', 'Médio', 'Difícil'],
-            starting_option='Fácil',
-            relative_rect = pygame.Rect((300, 100), (200, 30)),
+            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Biderecional'],
+            starting_option = 'Amplitude',
+            relative_rect=pygame.Rect(
+                (self.grid_size_pixels + 20, 140), 
+                (160, 40)
+            ),
             manager = self.manager
         )
+
         
         # Deixar esse sempre para o final
         self.clock = pygame.time.Clock()
