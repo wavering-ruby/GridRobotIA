@@ -2,7 +2,8 @@ import pygame
 import sys
 import pygame_gui
 from GridSearchNoWeight import Gera_Problema
-from GridSearch import buscaGridNP as Algoritmos
+from GridSearch import buscaGridNP
+
 
 class Node:
     def __init__(self, pai, estado, v1, v2, anterior, proximo):
@@ -127,6 +128,8 @@ class PathFinder:
         self.menu_width = 200
         self.grid_size_pixels = 600
         self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+        
+        buscador = buscaGridNP()
 
         pygame.display.set_caption("Path Finding Animation")
         self.clock = pygame.time.Clock()
@@ -393,11 +396,11 @@ class PathFinder:
                     if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
                         if 80 <= my <= 120:
                             self.reset_grid()
-                        elif 140 <= my <= 180:
-                            self.find_path()
-                            self.character_pos = list(self.start_pos)
-                            self.current_segment = 0
-                            self.last_move_time = pygame.time.get_ticks()
+                        # elif 140 <= my <= 180:
+                        #     self.find_path()
+                        #     self.character_pos = list(self.start_pos)
+                        #     self.current_segment = 0
+                        #     self.last_move_time = pygame.time.get_ticks()
                             
                 self.manager.process_events(event)
                 
@@ -418,17 +421,18 @@ class PathFinder:
                             self.sy = 0
                         else:
                             starting_pos = starting_pos.strip("()").split(",")
-                            self.sx = int(starting_pos[0]);
-                            self.sy = int(starting_pos[1]);
+                            self.sx = int(starting_pos[0]) - 1;
+                            self.sy = int(starting_pos[1]) - 1;
                         
                         if(self.input_text2.get_text() == ""):
                             self.ex = 9
                             self.ey = 9
                         else:
                             ending_pos = ending_pos.strip("()").split(",")
-                            self.ex = int(ending_pos[0]);
-                            self.ey = int(ending_pos[1]);
-                    self.reset_grid();
+                            self.ex = int(ending_pos[0]) - 1;
+                            self.ey = int(ending_pos[1]) - 1;
+                        
+                        self.reset_grid();
                 
             # Atualiza elementos da interface
             self.manager.update(time_delta)
