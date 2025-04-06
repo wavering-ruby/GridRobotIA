@@ -404,7 +404,6 @@ class PathFinder:
                         text2 = self.input_text2.get_text();
                         print(f"Texto digitado: {text1 + text2}")
                         # Você pode armazenar isso em uma variável, usar como parâmetro etc.
-
                 
             # Atualiza elementos da interface
             self.manager.update(time_delta)
