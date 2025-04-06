@@ -309,7 +309,7 @@ class PathFinder:
 
         # Botões
         self.draw_button("Reset Grid", (menu_x + 20, 80, 160, 40), button_font)
-        self.draw_button("Novo A*", (menu_x + 20, 140, 160, 40), button_font)
+        # self.draw_button("Novo A*", (menu_x + 20, 140, 160, 40), button_font) # Acho que não vai ser mais necessário esse botão
         self.draw_button("Fechar", (menu_x + 20, 200, 160, 40), button_font)
     
     def run(self):
@@ -317,6 +317,8 @@ class PathFinder:
         running = True
         
         while running:
+            time_delta = self.clock.tick(60) / 1000.00  # Tempo em segundos
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -338,7 +340,16 @@ class PathFinder:
                             self.last_move_time = pygame.time.get_ticks()
                         elif 200 <= my <= 240:
                             running = False
+                
+                # Verificando seleção no dropdown
+                if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
+                    if event.ui_element == dropdown:
+                        print(f'Selecionado: {event.text}')  # Mostra a opção escolhida
 
+                self.manager.process_events(event)
+                
+            # Atualiza elementos da interface
+            self.manager.update(time_delta)
             
             # Atualiza animação
             self.update_animation()
@@ -346,8 +357,9 @@ class PathFinder:
             # Desenha tudo
             self.screen.fill((0, 0, 0))
             self.draw()
+            self.manager.draw_ui(self.screen)  # desenha o dropdown por cima
             pygame.display.flip()
-            self.clock.tick(60)
+
         
         pygame.quit()
         sys.exit()
