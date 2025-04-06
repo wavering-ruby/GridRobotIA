@@ -342,15 +342,16 @@ class PathFinder:
                             self.character_pos = list(self.start_pos)
                             self.current_segment = 0
                             self.last_move_time = pygame.time.get_ticks()
-                        elif 200 <= my <= 240:
-                            running = False
+                        # elif 200 <= my <= 240:
+                        #     # running = False
+                        #     print("buceta 2")
+                            
+                self.manager.process_events(event)
                 
                 # Verificando seleção no dropdown
                 if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
-                    if event.ui_element == dropdown:
+                    if event.ui_element == self.dropdown:
                         print(f'Selecionado: {event.text}')  # Mostra a opção escolhida
-
-                self.manager.process_events(event)
                 
             # Atualiza elementos da interface
             self.manager.update(time_delta)
