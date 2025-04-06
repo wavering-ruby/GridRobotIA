@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 import sys
 from GridSearchNoWeight import Gera_Problema
 
@@ -126,7 +127,6 @@ class PathFinder:
         self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
 
         pygame.display.set_caption("Path Finding Animation")
-        self.clock = pygame.time.Clock()
         
         # Carrega a imagem do personagem
         self.load_character_image()
@@ -135,6 +135,20 @@ class PathFinder:
         self.animation_speed = 0.5  # Segundos por célula
         self.last_move_time = 0
         self.current_segment = 0
+        
+        # Inicializa o manager ANTES de criar o dropdown
+        self.manager = pygame_gui.UIManager((self.grid_size_pixels + self.menu_width, self.grid_size_pixels))
+        
+        # Criando dropdown
+        self.dropdown = pygame_gui.elements.UIDropDownMenu(
+            options_list=['Fácil', 'Médio', 'Difícil'],
+            starting_option='Fácil',
+            relative_rect = pygame.Rect((300, 100), (200, 30)),
+            manager = self.manager
+        )
+        
+        # Deixar esse sempre para o final
+        self.clock = pygame.time.Clock()
     
     def reset_grid(self):
         """Gera uma nova grid com obstáculos"""
@@ -301,6 +315,7 @@ class PathFinder:
     def run(self):
         """Loop principal"""
         running = True
+        
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
