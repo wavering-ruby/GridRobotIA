@@ -2,8 +2,7 @@ import pygame
 import sys
 import pygame_gui
 from GridSearchNoWeight import Gera_Problema
-from GridSearch import buscaGridNP
-
+from GridSearch import buscaGridNP as Algoritmos
 
 class Node:
     def __init__(self, pai, estado, v1, v2, anterior, proximo):
@@ -128,8 +127,6 @@ class PathFinder:
         self.menu_width = 200
         self.grid_size_pixels = 600
         self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
-        
-        buscador = buscaGridNP()
 
         pygame.display.set_caption("Path Finding Animation")
         self.clock = pygame.time.Clock()
@@ -214,13 +211,14 @@ class PathFinder:
         self.grid[self.start_pos[0]][self.start_pos[1]] = 0
         self.grid[self.end_pos[0]][self.end_pos[1]] = 0
         
-        # Encontra o caminho inicial
-        self.find_path()
-        
         # Reseta o estado da animação
         self.character_pos = list(self.start_pos)
         self.current_segment = 0
         self.last_move_time = pygame.time.get_ticks()
+        self.animation_started = False  # Reseta a flag de animação
+        
+        # Não calcula o caminho automaticamente
+        self.path = []
     
     def load_character_image(self):
         """Carrega a imagem do personagem ou cria uma padrão"""
@@ -292,8 +290,8 @@ class PathFinder:
     
     def update_animation(self):
         """Atualiza a posição do personagem na animação"""
-        if not self.path or self.current_segment >= len(self.path) - 1:
-            return False  # Animação concluída
+        if not self.animation_started or not self.path or self.current_segment >= len(self.path) - 1:
+            return False  # Animação não iniciada ou concluída
         
         current_time = pygame.time.get_ticks()
         elapsed = (current_time - self.last_move_time) / 1000  # Segundos
@@ -356,11 +354,6 @@ class PathFinder:
                     self.character_pos[0] * cell_size + cell_size//2))
         self.screen.blit(self.character_image, char_rect)
         
-        # Mostra informações
-        font = pygame.font.SysFont(None, 24)
-        # info_text = f"Path length: {len(self.path)} | Press R to reset"
-        # text_surface = font.render(info_text, True, (255, 255, 255))
-        # self.screen.blit(text_surface, (10, 10))
         
         # Desenha o menu lateral
         menu_x = self.grid_size_pixels
@@ -396,12 +389,7 @@ class PathFinder:
                     if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
                         if 80 <= my <= 120:
                             self.reset_grid()
-                        # elif 140 <= my <= 180:
-                        #     self.find_path()
-                        #     self.character_pos = list(self.start_pos)
-                        #     self.current_segment = 0
-                        #     self.last_move_time = pygame.time.get_ticks()
-                            
+                    
                 self.manager.process_events(event)
                 
                 # Verificando seleção no dropdown
@@ -421,24 +409,40 @@ class PathFinder:
                             self.sy = 0
                         else:
                             starting_pos = starting_pos.strip("()").split(",")
-                            self.sx = int(starting_pos[0]) - 1;
-                            self.sy = int(starting_pos[1]) - 1;
+                            self.sx = int(starting_pos[0]);
+                            self.sy = int(starting_pos[1]);
                         
                         if(self.input_text2.get_text() == ""):
                             self.ex = 9
                             self.ey = 9
                         else:
                             ending_pos = ending_pos.strip("()").split(",")
-                            self.ex = int(ending_pos[0]) - 1;
-                            self.ey = int(ending_pos[1]) - 1;
+                            self.ex = int(ending_pos[0]);
+                            self.ey = int(ending_pos[1]);
+                            
+                        # Atualiza as posições e calcula o caminho
+                        self.start_pos = (self.sx, self.sy)
+                        self.end_pos = (self.ex, self.ey)
                         
-                        self.reset_grid();
+                        # Garante que início e fim não são obstáculos
+                        self.grid[self.start_pos[0]][self.start_pos[1]] = 0
+                        self.grid[self.end_pos[0]][self.end_pos[1]] = 0
+                        
+                        # Calcula o caminho
+                        self.find_path()
+                        
+                        # Prepara a animação
+                        self.character_pos = list(self.start_pos)
+                        self.current_segment = 0
+                        self.last_move_time = pygame.time.get_ticks()
+                        self.animation_started = True  # Habilita a animação
                 
             # Atualiza elementos da interface
             self.manager.update(time_delta)
             
-            # Atualiza animação
-            self.update_animation()
+            # Atualiza animação (só se estiver habilitada)
+            if self.animation_started:
+                self.update_animation()
             
             # Desenha tudo
             self.screen.fill((0, 0, 0))
