@@ -97,8 +97,8 @@ class buscaGridNP(object):
         l2 = listaDEnc()
 
         # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(inicio,0,0,None)
-        l2.insereUltimo(inicio,0,0,None)
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
 
         # controle de nós visitados
         visitado = []
@@ -141,7 +141,7 @@ class buscaGridNP(object):
         return None
 #------------------------------------------------------------------------------
     # BUSCA EM PROFUNDIDADE
-    def profundidade(self,inicio,fim,nx,ny,mapa):
+    def profundidade(self, inicio, fim, nx, ny, mapa):
         # manipular a PILHA para a busca
         l1 = listaDEnc()
 
