@@ -124,11 +124,16 @@ class PathFinder:
         
         # Configurações do pygame
         pygame.init()
+        
+        # Configuração do dropdown
+        self.algoritmo_selecionado = "Amplitude"
+        
+        #Configurações da tela
         self.menu_width = 200
         self.grid_size_pixels = 600
         self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
 
-        pygame.display.set_caption("Path Finding Animation")
+        pygame.display.set_caption("Animação de Algoritmos de Busca")
         self.clock = pygame.time.Clock()
         
         # Carrega a imagem do personagem
@@ -161,10 +166,10 @@ class PathFinder:
             manager=self.manager
         )
 
-        # Legenda do campo X
+        # Legenda da Posição Inicial
         self.label_x = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((base_x, base_y + 70), (160, 20)),
-            text="Posição X Inicial:",
+            text="Posição Inicial (X, Y)",
             manager=self.manager
         )
 
@@ -174,10 +179,10 @@ class PathFinder:
             manager=self.manager
         )
 
-        # Legenda do campo Y
+        # Lengenda da Posição Final
         self.label_y = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((base_x, base_y + 130), (160, 20)),
-            text="Posição Y Inicial:",
+            text="Posição Final (X, Y):",
             manager=self.manager
         )
 
@@ -551,16 +556,16 @@ class PathFinder:
                             self.sy = 0
                         else:
                             starting_pos = starting_pos.strip("()").split(",")
-                            self.sx = int(starting_pos[0]);
-                            self.sy = int(starting_pos[1]);
+                            self.sx = int(starting_pos[0]) - 1
+                            self.sy = int(starting_pos[1]) - 1
                         
                         if(self.input_text2.get_text() == ""):
                             self.ex = 9
                             self.ey = 9
                         else:
                             ending_pos = ending_pos.strip("()").split(",")
-                            self.ex = int(ending_pos[0]);
-                            self.ey = int(ending_pos[1]);
+                            self.ex = int(ending_pos[0]) - 1
+                            self.ey = int(ending_pos[1]) - 1
                             
                         # Atualiza as posições e calcula o caminho
                         self.start_pos = (self.sx, self.sy)
