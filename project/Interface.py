@@ -365,6 +365,13 @@ class PathFinder:
                     if event.ui_element == self.dropdown:
                         print(f'Selecionado: {event.text}')  # Mostra a opção escolhida
                 
+                if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == self.botao_ler_texto:
+                        texto_digitado = self.input_text.get_text()
+                        print(f"Texto digitado: {texto_digitado}")
+                        # Você pode armazenar isso em uma variável, usar como parâmetro etc.
+
+                
             # Atualiza elementos da interface
             self.manager.update(time_delta)
             
@@ -376,7 +383,6 @@ class PathFinder:
             self.draw()
             self.manager.draw_ui(self.screen)  # desenha o dropdown por cima
             pygame.display.flip()
-
         
         pygame.quit()
         sys.exit()
