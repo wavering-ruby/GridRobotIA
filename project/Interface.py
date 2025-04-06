@@ -149,8 +149,20 @@ class PathFinder:
             ),
             manager = self.manager
         )
-
         
+        # Leitura do teclado
+        self.input_text = pygame_gui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect((self.grid_size_pixels + 20, 300), (160, 30)),
+            manager=self.manager
+        )
+        
+        # Botão para leitura de texto
+        self.botao_ler_texto = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((self.grid_size_pixels + 20, 340), (160, 30)),
+            text='Ler texto',
+            manager=self.manager
+        )
+
         # Deixar esse sempre para o final
         self.clock = pygame.time.Clock()
     
