@@ -163,7 +163,7 @@ class PathFinder:
         elif self.algoritmo_selecionado == 'Profundidade':
             self.find_path_profundidade()
         elif self.algoritmo_selecionado == 'Profundidade Lim.':
-            self.find_path_profundidade_limitada(limit=99)  # Limite padrão de 5
+            self.find_path_profundidade_limitada(limit = 99)
         elif self.algoritmo_selecionado == 'Aprof. Interativo':
             self.find_path_aprofundamento_iterativo()
         elif self.algoritmo_selecionado == 'Bidirecional':
