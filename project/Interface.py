@@ -3,7 +3,6 @@ import sys
 import pygame_gui
 from LinkedList import listaDEnc
 from GridSearchNoWeight import Gera_Problema
-from GridSearch import buscaGridNP
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -73,7 +72,7 @@ class PathFinder:
             manager=self.manager
         )
 
-        # Campo X
+        # Campo Inicial
         self.input_text = pygame_gui.elements.UITextEntryLine(
             relative_rect=pygame.Rect((base_x, base_y + 90), (160, 30)),
             manager=self.manager
@@ -86,7 +85,7 @@ class PathFinder:
             manager=self.manager
         )
 
-        # Campo Y
+        # Campo Final
         self.input_text2 = pygame_gui.elements.UITextEntryLine(
             relative_rect=pygame.Rect((base_x, base_y + 150), (160, 30)),
             manager=self.manager
