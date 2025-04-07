@@ -348,14 +348,14 @@ class PathFinder:
             if self.path:
                 return
             limite += 1
-            print(limite) # Debug para verificar se está executando
+            #print(limite) # Debug para verificar se está executando
             if limite > self.nx * self.ny:  # Limite que é a quantidade de grids, no geral
                 self.path = []
                 return
 
     def find_path_bidirecional(self):
         """Busca bidirecional"""
-        print("Estou iniciando!")
+        # print("Estou iniciando!")
         self.path = []
         
         # Primeiro Amplitude"
@@ -391,14 +391,14 @@ class PathFinder:
         visitado2.append(linha)
         
         ni = 0
-        print("Entrando no passo 1")
+        #print("Entrando no passo 1")
         while l1.vazio() == False or l3.vazio() == False:
             
             while l1.vazio() == False:
                 
                 # para ir para o próximo amplitude
                 if ni != l1.primeiro().v1:
-                    print("Indo para a amplitude 2")
+                    #print("Indo para a amplitude 2")
                     break
                     
                 # remove o primeiro da fila
@@ -416,8 +416,8 @@ class PathFinder:
                         l1.insereUltimo(novo, atual.v1 + 1, 0, atual)
                         l2.insereUltimo(novo, atual.v1 + 1, 0, atual)
                         
-                        print(l1.exibeLista())
-                        print(l2.exibeLista())
+                        #print(l1.exibeLista())
+                        #print(l2.exibeLista())
         
                         # marca como visitado
                         linha = []
@@ -441,7 +441,7 @@ class PathFinder:
             while l3.vazio() == False:
                 # para ir para o próximo amplitude
                 if ni != l3.primeiro().v1:
-                    print("Indo para o amplitude 1")
+                    # print("Indo para o amplitude 1")
                     break
                 
                 # remove o primeiro da fila
@@ -475,8 +475,8 @@ class PathFinder:
                             #print("\nÁrvore de busca:\n",l2.exibeLista())
                             caminho += l4.exibeCaminho()
                             caminho += l2.exibeCaminho1(novo)
-                            self.path = caminho
-                            print(self.path)
+                            self.path = caminho[::-1]
+                            # print(self.path)
                             return self.path
                             
             ni += 1
@@ -591,7 +591,7 @@ class PathFinder:
                 if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.ui_element == self.dropdown:
                         self.algoritmo_selecionado = event.text
-                        print(f'Selecionado: {self.algoritmo_selecionado}')
+                        # print(f'Selecionado: {self.algoritmo_selecionado}')
                 
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.botao_ler_texto:
