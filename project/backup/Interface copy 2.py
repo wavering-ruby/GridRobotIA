@@ -59,7 +59,7 @@ class PathFinder:
 
         # Dropdown
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
+            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Biderecional'],
             starting_option = 'Amplitude',
             relative_rect = pygame.Rect((base_x, base_y + 20), (160, 40)),
             manager=self.manager
@@ -126,14 +126,11 @@ class PathFinder:
     
     def load_character_image(self):
         """Carrega a imagem do personagem ou cria uma padrão"""
-        
         try:
-            original_image = pygame.image.load("PR_ATO.png");
-            
-            # Manter proporções mas limitar ao tamanho máximo da célula
+            original_image = pygame.image.load("PR_ATO.png")
+        # Manter proporções mas limitar ao tamanho máximo da célula
             cell_size = min(self.grid_size_pixels // self.ny, self.grid_size_pixels // self.nx)
             max_size = int(cell_size * 0.8)  # 80% do tamanho da célula
-            
             # Redimensionar mantendo proporção
             width = min(original_image.get_width(), max_size)
             height = min(original_image.get_height(), max_size)
@@ -171,11 +168,11 @@ class PathFinder:
             self.find_path_aprofundamento_iterativo()
         elif self.algoritmo_selecionado == 'Bidirecional':
             self.find_path_bidirecional()
+        # else:
+        #     self.find_path_amplitude()
         
     def find_path_amplitude(self):
         """Busca em amplitude"""
-        self.path = []
-        
         l1 = listaDEnc()
         l2 = listaDEnc()
         
@@ -210,8 +207,6 @@ class PathFinder:
 
     def find_path_profundidade(self):
         """Busca em profundidade"""
-        self.path = []
-        
         pilha = listaDEnc()
         visitados = set()
         
@@ -250,8 +245,6 @@ class PathFinder:
 
     def find_path_profundidade_limitada(self, limit):
         """Busca em profundidade limitada"""
-        self.path = []
-        
         # manipular a PILHA para a busca
         l1 = listaDEnc()
 
@@ -294,7 +287,7 @@ class PathFinder:
                         visitado.append(linha)
                         
                         # verifica se é o objetivo
-                        # print("Novo:", novo, "Objetivo:", self.end_pos)
+                        print("Novo:", novo, "Objetivo:", self.end_pos)
                         endi_pos = [self.end_pos[0], self.end_pos[1]]
                         
                         if novo == endi_pos:
@@ -306,7 +299,7 @@ class PathFinder:
                             # print(caminho)
                             # print(self.path.append(caminho))
                             self.path = caminho
-                            # print(self.path)
+                            print(self.path)
                             return self.path
 
         return None
@@ -338,150 +331,81 @@ class PathFinder:
 
     def find_path_aprofundamento_iterativo(self):
         """Aprofundamento iterativo"""
-        self.path = []
-        
         # Mudei para ser "recursivo..."
         limite = 0
-        
         while True:
             self.find_path_profundidade_limitada(limite)
             if self.path:
                 return
             limite += 1
-            print(limite) # Debug para verificar se está executando
             if limite > self.nx * self.ny:  # Limite que é a quantidade de grids, no geral
                 self.path = []
                 return
 
     def find_path_bidirecional(self):
         """Busca bidirecional"""
-        print("Estou iniciando!")
-        self.path = []
+        # Fronteiras para busca a partir do início e do fim
+        fronteira_inicio = listaDEnc()
+        fronteira_fim = listaDEnc()
         
-        # Primeiro Amplitude"
-        # Manipular a FILA para a busca
-        l1 = listaDEnc()
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = listaDEnc()
+        # Dicionários para armazenar os nós visitados e seus pais
+        visitados_inicio = {tuple(self.start_pos): None}
+        visitados_fim = {tuple(self.end_pos): None}
         
-        # Segundo Amplitude"
-        # Manipular a FILA para a busca
-        l3 = listaDEnc()
-        # cópia para apresentar o caminho (somente inserção)
-        l4 = listaDEnc()
-    
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(self.start_pos, 0, 0, None)
-        l2.insereUltimo(self.start_pos, 0, 0, None)
+        fronteira_inicio.insereUltimo(self.start_pos, 0, 0, None)
+        fronteira_fim.insereUltimo(self.end_pos, 0, 0, None)
         
-        l3.insereUltimo(self.end_pos, 0, 0, None)
-        l4.insereUltimo(self.end_pos, 0, 0, None)
+        interseccao = None
         
-        # controle de nós visitados
-        visitado1 = []
-        linha = []
-        linha.append(self.start_pos)
-        linha.append(0)
-        visitado1.append(linha)
-        
-        visitado2 = []
-        linha = []
-        linha.append(self.end_pos)
-        linha.append(0)
-        visitado2.append(linha)
-        
-        ni = 0
-        print("Entrando no passo 1")
-        while l1.vazio() == False or l3.vazio() == False:
+        while not fronteira_inicio.vazio() and not fronteira_fim.vazio():
+            # Expande a partir do início
+            no_inicio = fronteira_inicio.deletaPrimeiro()
+            for vizinho in self.sucessores(no_inicio.estado):
+                if tuple(vizinho) not in visitados_inicio:
+                    visitados_inicio[tuple(vizinho)] = no_inicio.estado
+                    fronteira_inicio.insereUltimo(vizinho, 0, 0, no_inicio)
+                    
+                    if tuple(vizinho) in visitados_fim:
+                        interseccao = vizinho
+                        break
             
-            while l1.vazio() == False:
+            if interseccao:
+                break
                 
-                # para ir para o próximo amplitude
-                if ni != l1.primeiro().v1:
-                    print("Indo para a amplitude 2")
-                    break
+            # Expande a partir do fim
+            no_fim = fronteira_fim.deletaPrimeiro()
+            for vizinho in self.sucessores(no_fim.estado):
+                if tuple(vizinho) not in visitados_fim:
+                    visitados_fim[tuple(vizinho)] = no_fim.estado
+                    fronteira_fim.insereUltimo(vizinho, 0, 0, no_fim)
                     
-                # remove o primeiro da fila
-                atual = l1.deletaPrimeiro()
+                    if tuple(vizinho) in visitados_inicio:
+                        interseccao = vizinho
+                        break
+            
+            if interseccao:
+                break
         
-                filhos = self.sucessores(atual.estado)
-        
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
-                    # pressuponho que não foi visitado
-                    flag = self.verificaVisitado(novo, atual.v1 + 1, visitado1)
-                    
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l1.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        l2.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        
-                        print(l1.exibeLista())
-                        print(l2.exibeLista())
-        
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.v1 + 1)
-                        visitado1.append(linha)
-        
-                        # verifica se é o objetivo
-                        flag = not(self.verificaVisitado(novo, atual.v1 + 1, visitado2))
-                        
-                        if flag:    
-                            caminho = []
-                            #print("Fila:\n",l1.exibeLista())
-                            #print("\nÁrvore de busca:\n",l2.exibeLista())
-                            #print("\nÁrvore de busca:\n",l4.exibeLista())
-                            caminho += l2.exibeCaminho()
-                            caminho += l4.exibeCaminho1(novo)
-                            self.path = caminho
-                            return self.path
-                        
-            while l3.vazio() == False:
-                # para ir para o próximo amplitude
-                if ni != l3.primeiro().v1:
-                    print("Indo para o amplitude 1")
-                    break
-                
-                # remove o primeiro da fila
-                atual = l3.deletaPrimeiro()
-        
-                filhos = self.sucessores(atual.estado)
-        
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
-                    # pressuponho que não foi visitado
-                    flag = self.verificaVisitado(novo, atual.v1 + 1, visitado2)
-                    
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l3.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        l4.insereUltimo(novo, atual.v1 + 1, 0, atual)
-        
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.v1 + 1)
-                        visitado2.append(linha)
-        
-                        # verifica se é o objetivo
-                        flag = not(self.verificaVisitado(novo, atual.v1 + 1, visitado1))
-                        
-                        if flag:
-                            caminho = []
-                            #print("Fila:\n",l3.exibeLista())
-                            #print("\nÁrvore de busca:\n",l4.exibeLista())
-                            #print("\nÁrvore de busca:\n",l2.exibeLista())
-                            caminho += l4.exibeCaminho()
-                            caminho += l2.exibeCaminho1(novo)
-                            self.path = caminho
-                            print(self.path)
-                            return self.path
-                            
-            ni += 1
-        
-        return self.path
+        if interseccao:
+            # Reconstrói o caminho do início até a interseção
+            caminho_inicio = []
+            estado = tuple(interseccao)
+            while estado is not None:
+                caminho_inicio.append(list(estado))
+                estado = visitados_inicio.get(estado)
+            caminho_inicio = caminho_inicio[::-1]
+            
+            # Reconstrói o caminho da interseção até o fim
+            caminho_fim = []
+            estado = tuple(interseccao)
+            while estado is not None:
+                caminho_fim.append(list(estado))
+                estado = visitados_fim.get(estado)
+            
+            # Combina os caminhos (removendo a interseção duplicada)
+            self.path = caminho_inicio + caminho_fim[1:]
+        else:
+            self.path = []
     
     def update_animation(self):
         """Atualiza a posição do personagem na animação"""

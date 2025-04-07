@@ -163,7 +163,7 @@ class buscaGridNP(object):
             # remove o último da PILHA
             atual = l1.deletaUltimo()
             
-            filhos = self.sucessores(atual.estado,nx,ny,mapa)
+            filhos = self.sucessores(atual.estado, nx, ny, mapa)
 
             # varre todos as conexões dentro do grafo a partir de atual
             for novo in filhos:
@@ -214,8 +214,8 @@ class buscaGridNP(object):
         while l1.vazio() == False:
             # remove o último da PILHA
             atual = l1.deletaUltimo()
-            if atual.v1<lim:
-                filhos = self.sucessores(atual.estado,nx,ny,mapa)
+            if atual.v1 < lim:
+                filhos = self.sucessores(atual.estado, nx, ny, mapa)
     
                 # varre todos as conexões dentro do grafo a partir de atual
                 for novo in filhos:
@@ -245,7 +245,7 @@ class buscaGridNP(object):
         return None    
     # BUSCA EM APROFUDAMENTO ITERATIVO
     def aprof_iterativo(self,inicio,fim,nx,ny,mapa,l_max):
-        for lim in range(1,l_max):
+        for lim in range(1, l_max):
             # manipular a PILHA para a busca
             l1 = listaDEnc()
     
@@ -336,7 +336,7 @@ class buscaGridNP(object):
             while l1.vazio() == False:
                 
                 # para ir para o próximo amplitude
-                if ni!=l1.primeiro().v1:
+                if ni != l1.primeiro().v1:
                     break
                     
                 # remove o primeiro da fila
