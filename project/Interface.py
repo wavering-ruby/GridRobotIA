@@ -1,17 +1,9 @@
 import pygame
 import sys
 import pygame_gui
+from Node import Node
 from GridSearchNoWeight import Gera_Problema
 from GridSearch import buscaGridNP
-
-class Node:
-    def __init__(self, pai, estado, v1, v2, anterior, proximo):
-        self.pai = pai
-        self.estado = estado
-        self.v1 = v1
-        self.v2 = v2
-        self.anterior = anterior
-        self.proximo = proximo
 
 class listaDEnc:
     def __init__(self):

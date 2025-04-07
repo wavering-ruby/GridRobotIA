@@ -32,7 +32,6 @@ while running:
 
     screen.fill((0, 0, 0))  # Fundo preto
 
-    # Obter tamanho da tela e calcular células
     width, height = screen.get_size()
     cell_size = min(width // cols, height // rows)
 
