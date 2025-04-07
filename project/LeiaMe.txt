@@ -1,0 +1,26 @@
+Nome: Caio Viana de Jesus e Mateus Gabriel Mendes de Paula
+
+### Bibliotecas Necessárias: ###
+Para a execução do programa é necessário ter algumas bibliotecas antes de depurar o arquivo, sendo elas:
+- Pygame (pip install pygame)
+- Pygame_gui (pip install pygame_gui)
+- Numpy (pip install numpy)
+
+### Inicialização do arquivo: ###
+Para executar o programa, é necessário depurar o arquivo "Interface.py", que contém a programação do menu lateral. Ao abri-lo, serão exibidas as opções para selecionar o algoritmo desejado (Amplitude, Profundidade, Profundidade limitada, Aprofundamento iterativo ou Bidirecional).
+Em seguida, deve-se informar:
+•	A posição inicial do robô (coordenadas X, Y).
+•	A posição final (coordenadas X, Y).
+Após definir esses parâmetros, basta clicar em "Iniciar" para que a animação do robô seja executada.
+Caso deseje gerar uma Grid nova aleatório, deve-se clicar no botão “Reset Grid”, isso resetará também a animação.
+No caso do algoritmo “profundidade limitada”, ele está configurado como limite sendo igual a 99, caso seja necessário modificar deve-se trocar na função “find_path”, na chamada “self.find_path_profundidade_limitada(limite=X)”, onde X representa o valor do limite desejado. Se o caminho da resolução for maior que o limite o robô não andará.
+Observação: Caso coloque que a "posição inicial"/"posição final" é igual a um obstáculo, ele passará a ser um caminho viável.
+
+### Passo a passo: ###
+1.	Depurar o arquivo "Interface.py" (por terminal ou por compilador, conforme desejar).
+1.1.	Se for por terminal escrever: python interface.py
+2.	Clique no botão "Reset Grid" caso deseje sortear outro campo.
+3.	Na caixa de seleção de algoritmo clique no nome do algoritmo que deseja visualizar.
+4.	No campo "Posição Inicial" digite as coordenadas do ponto que deseja ser o ponto inicial do robô, conforme template: (X,Y).
+5.	No campo "Posição Final" digite as coordenadas do ponto que deseja ser o ponto final do robô, conforme template: (X,Y).
+6.	Clique no botão "Iniciar" para que a animação do percurso do robô seja realizada. 
