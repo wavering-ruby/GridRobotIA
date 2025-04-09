@@ -17,6 +17,8 @@ The environment of the movimentation of the robot it's represented by a graph or
 
 The obstacles is marked as inacessible cells or nodes.
 
+You will see, that some algorithms are used in weight cases or non weight cases of a graph.
+
 ## 2. Definition of the Origin and Destiny
 
 The robot starts on a initial point (initial node or cell) and needs to find a route to the objective point (final node or cell).
