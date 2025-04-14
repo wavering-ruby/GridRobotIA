@@ -2,7 +2,7 @@ import pygame
 import sys
 import pygame_gui
 from LinkedList import listaDEnc
-from GridSearchNoWeight import Gera_Problema
+from GridSearchNoWeight import ProblemGenerator
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -107,7 +107,7 @@ class PathFinder:
     
     def reset_grid(self):
         """Gera uma nova grid com obstáculos"""
-        self.grid = Gera_Problema(self.nx, self.ny, self.qtd_obstacles)
+        self.grid = ProblemGenerator(self.nx, self.ny, self.qtd_obstacles)
         self.start_pos = (self.sx, self.sy)
         self.end_pos = (self.ex, self.ey)
         
@@ -310,31 +310,6 @@ class PathFinder:
                             return self.path
 
         return None
-        """
-        self.path = []
-        visitados = set()
-        
-        def dfs_limitada(estado, profundidade, caminho_atual):
-            if profundidade > limit:
-                return False
-            
-            if estado == list(self.end_pos):
-                self.path = caminho_atual + [estado]
-                return True
-            
-            visitados.add(tuple(estado))
-            
-            for vizinho in self.sucessores(estado):
-                if tuple(vizinho) not in visitados:
-                    if dfs_limitada(vizinho, profundidade + 1, caminho_atual + [estado]):
-                        return True
-            
-            return False
-        
-        dfs_limitada(list(self.start_pos), 0, [])
-        if not self.path:
-            self.path = []
-        """
 
     def find_path_aprofundamento_iterativo(self):
         """Aprofundamento iterativo"""
