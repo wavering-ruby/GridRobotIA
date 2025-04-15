@@ -3,6 +3,7 @@ import sys
 import pygame_gui
 from LinkedList import listaDEnc
 from GridSearchNoWeight import ProblemGenerator
+from UnweightSearch import amplitudeSearch
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -162,7 +163,7 @@ class PathFinder:
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
         if self.algoritmo_selecionado == 'Amplitude':
-            self.find_path_amplitude()
+            self.path = amplitudeSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
         elif self.algoritmo_selecionado == 'Profundidade':
             self.find_path_profundidade()
         elif self.algoritmo_selecionado == 'Profundidade Lim.':
