@@ -23,4 +23,4 @@ Observação: Caso coloque que a "posição inicial"/"posição final" é igual 
 3.	Na caixa de seleção de algoritmo clique no nome do algoritmo que deseja visualizar.
 4.	No campo "Posição Inicial" digite as coordenadas do ponto que deseja ser o ponto inicial do robô, conforme template: (X,Y).
 5.	No campo "Posição Final" digite as coordenadas do ponto que deseja ser o ponto final do robô, conforme template: (X,Y).
-6.	Clique no botão "Iniciar" para que a animação do percurso do robô seja realizada. 
+6.	Clique no botão "Iniciar" para que a animação do percurso do robô seja realizada.
