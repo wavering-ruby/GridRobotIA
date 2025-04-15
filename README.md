@@ -26,3 +26,36 @@ The robot starts on a initial point (initial node or cell) and needs to find a r
 ## 3. Costs Function
 
 <More Soon...>
+
+## 4. Running the Project
+
+### 4.1. Required Libraries:
+To run the program, you need to install some libraries before debugging the file. These include:
+- Pygame (`pip install pygame`)
+- Pygame_gui (`pip install pygame_gui`)
+- Numpy (`pip install numpy`)
+
+### 4.2. File Initialization
+To execute the program, you need to debug the file **"Interface.py"**, which contains the programming for the sidebar menu. Upon opening it, you will see options to select the desired algorithm (Breadth-First Search, Depth-First Search, Limited Depth Search, Iterative Deepening, or Bidirectional Search).
+
+Next, you must specify:
+- The robot's starting position (coordinates X, Y).
+- The final position (coordinates X, Y).
+
+After setting these parameters, simply click **"Start"** for the robot's animation to begin.  
+If you want to generate a new random grid, click the **"Reset Grid"** button. This will also reset the animation.
+
+For the **Limited Depth Search** algorithm, the depth limit is set to **99** by default. If you need to modify it, change the function call in `find_path`:  
+`self.find_path_profundidade_limitada(limite=X)`, where **X** represents the desired depth limit.  
+If the solution path exceeds the limit, the robot will not move.
+
+**Note:** If you set the "starting position" or "final position" as an obstacle, it will become a viable path.
+
+### 4.3. Step-by-Step Guide:
+1. Debug the **"Interface.py"** file (via terminal or a compiler, as desired).
+   - If using a terminal, type: `python interface.py`
+2. Click the **"Reset Grid"** button if you want to generate a new random field.
+3. In the algorithm selection box, click the name of the algorithm you want to visualize.
+4. In the **"Initial Position"** field, enter the coordinates of the point where the robot should start, using the format: `(X,Y)`.
+5. In the **"Final Position"** field, enter the coordinates of the point where the robot should end, using the format: `(X,Y)`.
+6. Click the **"Start"** button to execute the robot's animation path.
