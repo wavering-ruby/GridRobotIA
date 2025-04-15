@@ -1,7 +1,7 @@
 import numpy as np
 from random import randrange
 
-def ProblemGenerator(nx, ny, qtd):
+def RandomProblemGenerator(nx, ny, qtd):
     map = np.zeros((nx, ny), int)
     
     k = 0

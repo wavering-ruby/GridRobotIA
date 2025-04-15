@@ -1,8 +1,8 @@
 import pygame
 import sys
 import pygame_gui
-from GridGenerator import ProblemGenerator
-from UnweightSearch import amplitudeSearch, depthSearch, depthLimitedSearch, iterativeDeepeningSearch, bidirectionalSearch, gridSuccessors
+from GridGenerator import RandomProblemGenerator
+from UnweightSearch import UnweightSearch
 
 class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -51,7 +51,7 @@ class UserInterface:
         
         base_x = self.grid_size_pixels + 20
         base_y = 200
-        espaco = 40
+        # espaco = 40
 
         # Legenda do Dropdown
         self.label_dropdown = pygame_gui.elements.UILabel(
@@ -110,7 +110,7 @@ class UserInterface:
     
     def reset_grid(self):
         """Gera uma nova grid com obstáculos"""
-        self.grid = ProblemGenerator(self.nx, self.ny, self.qtd_obstacles)
+        self.grid = RandomProblemGenerator(self.nx, self.ny, self.qtd_obstacles)
         self.start_pos = (self.sx, self.sy)
         self.end_pos = (self.ex, self.ey)
         
@@ -150,16 +150,18 @@ class UserInterface:
 
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
+        search = UnweightSearch(self.grid, self.nx, self.ny)
+        
         if self.sel_algorithm == 'Amplitude':
-            self.path = amplitudeSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
+            self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade':
-            self.path = depthSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
+            self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
-            self.path = depthLimitedSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors, 99)
+            self.path = search.depthLimitedSearch(self.start_pos, self.end_pos, 99)
         elif self.sel_algorithm == 'Aprof. Interativo':
-            self.path = iterativeDeepeningSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
+            self.path = search.iterativeDeepeningSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Bidirecional':
-            self.path = bidirectionalSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
+            self.path = search.bidirectionalSearch(self.start_pos, self.end_pos)
     
     def update_animation(self):
         """Atualiza a posição do personagem na animação"""
