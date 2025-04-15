@@ -3,7 +3,7 @@ import sys
 import pygame_gui
 from LinkedList import listaDEnc
 from GridSearchNoWeight import ProblemGenerator
-from UnweightSearch import amplitudeSearch
+from UnweightSearch import amplitudeSearch, depthSearch
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -165,77 +165,13 @@ class PathFinder:
         if self.algoritmo_selecionado == 'Amplitude':
             self.path = amplitudeSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
         elif self.algoritmo_selecionado == 'Profundidade':
-            self.find_path_profundidade()
+            self.path = depthSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
         elif self.algoritmo_selecionado == 'Profundidade Lim.':
             self.find_path_profundidade_limitada(limit = 99)
         elif self.algoritmo_selecionado == 'Aprof. Interativo':
             self.find_path_aprofundamento_iterativo()
         elif self.algoritmo_selecionado == 'Bidirecional':
             self.find_path_bidirecional()
-        
-    def find_path_amplitude(self):
-        """Busca em amplitude"""
-        self.path = []
-        
-        l1 = listaDEnc()
-        l2 = listaDEnc()
-        
-        l1.insereUltimo(self.start_pos, 0, 0, None)
-        l2.insereUltimo(self.start_pos, 0, 0, None)
-        
-        visitado = [[self.start_pos, 0]]
-        
-        while not l1.vazio():
-            atual = l1.deletaPrimeiro()
-            
-            for novo in self.sucessores(atual.estado):
-                flag = True
-                for aux in visitado:
-                    if aux[0] == novo:
-                        if aux[1] <= (atual.v1 + 1):
-                            flag = False
-                        else:
-                            aux[1] = atual.v1 + 1
-                        break
-                
-                if flag:
-                    l1.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                    l2.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                    visitado.append([novo, atual.v1 + 1])
-                    
-                    if novo == list(self.end_pos):
-                        self.path = l2.exibeCaminho()
-                        return
-        
-        self.path = []
-
-    def find_path_profundidade(self):
-        """Busca em profundidade"""
-        self.path = []
-        
-        pilha = listaDEnc()
-        visitados = set()
-        
-        pilha.insereUltimo(self.start_pos, 0, 0, None)
-        visitados.add(tuple(self.start_pos))
-        
-        while not pilha.vazio():
-            atual = pilha.deletaUltimo()
-            
-            if atual.estado == list(self.end_pos):
-                self.path = []
-                no = atual
-                while no is not None:
-                    self.path.insert(0, no.estado)
-                    no = no.pai
-                return
-            
-            for vizinho in self.sucessores(atual.estado):
-                if tuple(vizinho) not in visitados:
-                    visitados.add(tuple(vizinho))
-                    pilha.insereUltimo(vizinho, 0, 0, atual)
-        
-        self.path = []
         
     def verificaVisitado(self,novo,nivel,visitado):
         flag = True

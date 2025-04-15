@@ -4,8 +4,8 @@ def gridSuccessors(state, grid, nx, ny):
     """Gera os sucessores válidos para um estado"""
     x, y = state
     moves = [
-        (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1),           # Cardinais
-        (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)  # Diagonais
+        (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1),           # Movimentos cardinais
+        (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)  # Movimentos diagonais
     ]
     
     validMoves = []
@@ -50,3 +50,31 @@ def amplitudeSearch(start_pos, end_pos, grid, nx, ny):
                     
     return []
 
+def depthSearch(start_pos, end_pos, grid, nx, ny):
+    """
+    Realiza a busca em profundidade e retorna o caminho encontrado.
+    Se não encontrar o caminho, retorna uma lista vazia.
+    """
+    pilha = listaDEnc()
+    visitados = set()
+    
+    pilha.insereUltimo(start_pos, 0, 0, None)
+    visitados.add(tuple(start_pos))
+    
+    while not pilha.vazio():
+        atual = pilha.deletaUltimo()
+        
+        if atual.estado == list(end_pos):
+            caminho = []
+            no = atual
+            while no is not None:
+                caminho.insert(0, no.estado)
+                no = no.pai
+            return caminho
+        
+        for vizinho in gridSuccessors(atual.estado, grid, nx, ny):
+            if tuple(vizinho) not in visitados:
+                visitados.add(tuple(vizinho))
+                pilha.insereUltimo(vizinho, 0, 0, atual)
+                
+    return []
