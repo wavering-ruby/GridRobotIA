@@ -1,8 +1,7 @@
 import pygame
 import sys
 import pygame_gui
-from LinkedList import listaDEnc
-from GridSearchNoWeight import ProblemGenerator
+from GridGenerator import ProblemGenerator
 from UnweightSearch import amplitudeSearch, depthSearch, depthLimitedSearch, iterativeDeepeningSearch, bidirectionalSearch, gridSuccessors
 
 class UserInterface:
@@ -66,7 +65,7 @@ class UserInterface:
             options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
             starting_option = 'Amplitude',
             relative_rect = pygame.Rect((base_x, base_y + 20), (160, 40)),
-            manager=self.manager
+            manager = self.manager
         )
 
         # Legenda da Posição Inicial

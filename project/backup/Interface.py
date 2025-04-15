@@ -1,8 +1,8 @@
 import pygame
-from GridSearchNoWeight import Gera_Problema
+from project.GridGenerator import Gera_Problema
 from project.depraced.GridSearch import buscaGridNP
-from GridSearchNoWeight import Get_Origin
-from GridSearchNoWeight import Get_Destiny
+from project.GridGenerator import Get_Origin
+from project.GridGenerator import Get_Destiny
 
 import pygame
 import random

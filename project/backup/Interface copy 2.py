@@ -2,7 +2,7 @@ import pygame
 import sys
 import pygame_gui
 from LinkedList import listaDEnc
-from GridSearchNoWeight import Gera_Problema
+from project.GridGenerator import Gera_Problema
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):

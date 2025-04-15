@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 import sys
-from GridSearchNoWeight import Gera_Problema
+from project.GridGenerator import Gera_Problema
 
 class Node:
     def __init__(self, pai, estado, v1, v2, anterior, proximo):
