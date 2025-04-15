@@ -3,7 +3,7 @@ import sys
 import pygame_gui
 from LinkedList import listaDEnc
 from GridSearchNoWeight import ProblemGenerator
-from UnweightSearch import amplitudeSearch, depthSearch
+from UnweightSearch import amplitudeSearch, depthSearch, depthLimitedSearch, iterativeDeepeningSearch, bidirectionalSearch, gridSuccessors
 
 class PathFinder:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -145,21 +145,7 @@ class PathFinder:
             size = int(cell_size * 0.6)
             self.character_image = pygame.Surface((size, size), pygame.SRCALPHA)
             pygame.draw.circle(self.character_image, (0, 0, 255), (size//2, size//2), size//2)
-            
-    def sucessores(self, estado):
-        """Gera os sucessores válidos para um estado"""
-        x, y = estado
-        moves = [
-            (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1),  # Movimentos cardinais
-            (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)  # Movimentos diagonais
-        ]
-        
-        valid_moves = []
-        for nx, ny in moves:
-            if 0 <= nx < self.nx and 0 <= ny < self.ny and self.grid[nx][ny] == 0:
-                valid_moves.append([nx, ny])
-        return valid_moves
-    
+
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
         if self.algoritmo_selecionado == 'Amplitude':
@@ -167,233 +153,11 @@ class PathFinder:
         elif self.algoritmo_selecionado == 'Profundidade':
             self.path = depthSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
         elif self.algoritmo_selecionado == 'Profundidade Lim.':
-            self.find_path_profundidade_limitada(limit = 99)
+            self.path = depthLimitedSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors, 99)
         elif self.algoritmo_selecionado == 'Aprof. Interativo':
-            self.find_path_aprofundamento_iterativo()
+            self.path = iterativeDeepeningSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
         elif self.algoritmo_selecionado == 'Bidirecional':
-            self.find_path_bidirecional()
-        
-    def verificaVisitado(self,novo,nivel,visitado):
-        flag = True
-        # controle de nós repetidos
-        for aux in visitado:
-            if aux[0] == novo:
-                if aux[1] <= (nivel + 1):
-                    flag = False
-                else:
-                    aux[1] = nivel + 1
-                break
-        return flag
-
-    def find_path_profundidade_limitada(self, limit):
-        """Busca em profundidade limitada"""
-        self.path = []
-        
-        # manipular a PILHA para a busca
-        l1 = listaDEnc()
-
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = listaDEnc()
-
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(self.start_pos, 0, 0, None)
-        l2.insereUltimo(self.start_pos, 0, 0, None)
-
-        # controle de nós visitados
-        visitado = []
-        linha = []
-        linha.append(self.start_pos)
-        linha.append(0)
-        visitado.append(linha)
-
-        while l1.vazio() == False:
-            # remove o último da PILHA
-            atual = l1.deletaUltimo()
-            
-            if atual.v1 < limit:
-                filhos = self.sucessores(atual.estado)
-                # print("Entrando no if (limit)")
-    
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
-                    # verifica se foi visitado
-                    flag = self.verificaVisitado(novo, atual.v1, visitado)
-    
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l1.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        l2.insereUltimo(novo, atual.v1 + 1, 0, atual)
-    
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.v1 + 1)
-                        visitado.append(linha)
-                        
-                        # verifica se é o objetivo
-                        # print("Novo:", novo, "Objetivo:", self.end_pos)
-                        endi_pos = [self.end_pos[0], self.end_pos[1]]
-                        
-                        if novo == endi_pos:
-                            caminho = []
-                            caminho += l2.exibeCaminho()
-                            #print("\nFila:\n",l1.exibeLista())
-                            #print("\nÁrvore de busca:\n",l2.exibeLista())
-                            #print(self.path);
-                            # print(caminho)
-                            # print(self.path.append(caminho))
-                            self.path = caminho
-                            # print(self.path)
-                            return self.path
-
-        return None
-
-    def find_path_aprofundamento_iterativo(self):
-        """Aprofundamento iterativo"""
-        self.path = []
-        
-        # Mudei para ser "recursivo..."
-        limite = 0
-        
-        while True:
-            self.find_path_profundidade_limitada(limite)
-            if self.path:
-                return
-            limite += 1
-            #print(limite) # Debug para verificar se está executando
-            if limite > self.nx * self.ny:  # Limite que é a quantidade de grids, no geral
-                self.path = []
-                return
-
-    def find_path_bidirecional(self):
-        """Busca bidirecional"""
-        # print("Estou iniciando!")
-        self.path = []
-        
-        # Primeiro Amplitude"
-        # Manipular a FILA para a busca
-        l1 = listaDEnc()
-        # cópia para apresentar o caminho (somente inserção)
-        l2 = listaDEnc()
-        
-        # Segundo Amplitude"
-        # Manipular a FILA para a busca
-        l3 = listaDEnc()
-        # cópia para apresentar o caminho (somente inserção)
-        l4 = listaDEnc()
-    
-        # insere ponto inicial como nó raiz da árvore
-        l1.insereUltimo(self.start_pos, 0, 0, None)
-        l2.insereUltimo(self.start_pos, 0, 0, None)
-        
-        l3.insereUltimo(self.end_pos, 0, 0, None)
-        l4.insereUltimo(self.end_pos, 0, 0, None)
-        
-        # controle de nós visitados
-        visitado1 = []
-        linha = []
-        linha.append(self.start_pos)
-        linha.append(0)
-        visitado1.append(linha)
-        
-        visitado2 = []
-        linha = []
-        linha.append(self.end_pos)
-        linha.append(0)
-        visitado2.append(linha)
-        
-        ni = 0
-        #print("Entrando no passo 1")
-        while l1.vazio() == False or l3.vazio() == False:
-            
-            while l1.vazio() == False:
-                
-                # para ir para o próximo amplitude
-                if ni != l1.primeiro().v1:
-                    #print("Indo para a amplitude 2")
-                    break
-                    
-                # remove o primeiro da fila
-                atual = l1.deletaPrimeiro()
-        
-                filhos = self.sucessores(atual.estado)
-        
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
-                    # pressuponho que não foi visitado
-                    flag = self.verificaVisitado(novo, atual.v1 + 1, visitado1)
-                    
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l1.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        l2.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        
-                        #print(l1.exibeLista())
-                        #print(l2.exibeLista())
-        
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.v1 + 1)
-                        visitado1.append(linha)
-        
-                        # verifica se é o objetivo
-                        flag = not(self.verificaVisitado(novo, atual.v1 + 1, visitado2))
-                        
-                        if flag:    
-                            caminho = []
-                            #print("Fila:\n",l1.exibeLista())
-                            #print("\nÁrvore de busca:\n",l2.exibeLista())
-                            #print("\nÁrvore de busca:\n",l4.exibeLista())
-                            caminho += l2.exibeCaminho()
-                            caminho += l4.exibeCaminho1(novo)
-                            self.path = caminho
-                            return self.path
-                        
-            while l3.vazio() == False:
-                # para ir para o próximo amplitude
-                if ni != l3.primeiro().v1:
-                    # print("Indo para o amplitude 1")
-                    break
-                
-                # remove o primeiro da fila
-                atual = l3.deletaPrimeiro()
-        
-                filhos = self.sucessores(atual.estado)
-        
-                # varre todos as conexões dentro do grafo a partir de atual
-                for novo in filhos:
-                    # pressuponho que não foi visitado
-                    flag = self.verificaVisitado(novo, atual.v1 + 1, visitado2)
-                    
-                    # se não foi visitado inclui na fila
-                    if flag:
-                        l3.insereUltimo(novo, atual.v1 + 1, 0, atual)
-                        l4.insereUltimo(novo, atual.v1 + 1, 0, atual)
-        
-                        # marca como visitado
-                        linha = []
-                        linha.append(novo)
-                        linha.append(atual.v1 + 1)
-                        visitado2.append(linha)
-        
-                        # verifica se é o objetivo
-                        flag = not(self.verificaVisitado(novo, atual.v1 + 1, visitado1))
-                        
-                        if flag:
-                            caminho = []
-                            #print("Fila:\n",l3.exibeLista())
-                            #print("\nÁrvore de busca:\n",l4.exibeLista())
-                            #print("\nÁrvore de busca:\n",l2.exibeLista())
-                            caminho += l4.exibeCaminho()
-                            caminho += l2.exibeCaminho1(novo)
-                            self.path = caminho[::-1]
-                            # print(self.path)
-                            return self.path
-                            
-            ni += 1
-        
-        return self.path
+            self.path = bidirectionalSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
     
     def update_animation(self):
         """Atualiza a posição do personagem na animação"""
