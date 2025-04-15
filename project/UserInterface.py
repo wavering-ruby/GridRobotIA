@@ -5,7 +5,7 @@ from LinkedList import listaDEnc
 from GridSearchNoWeight import ProblemGenerator
 from UnweightSearch import amplitudeSearch, depthSearch, depthLimitedSearch, iterativeDeepeningSearch, bidirectionalSearch, gridSuccessors
 
-class PathFinder:
+class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
         # Configurações da grid
         self.nx, self.ny = grid_size
@@ -25,8 +25,11 @@ class PathFinder:
         # Configurações do pygame
         pygame.init()
         
+        # Configuração do Ícone
+        pygame.display.set_icon(pygame.image.load("PR_ATO_ICON.png"))
+        
         # Configuração do dropdown
-        self.algoritmo_selecionado = "Amplitude"
+        self.sel_algorithm = "Amplitude"
         
         #Configurações da tela
         self.menu_width = 200
@@ -148,15 +151,15 @@ class PathFinder:
 
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
-        if self.algoritmo_selecionado == 'Amplitude':
+        if self.sel_algorithm == 'Amplitude':
             self.path = amplitudeSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
-        elif self.algoritmo_selecionado == 'Profundidade':
+        elif self.sel_algorithm == 'Profundidade':
             self.path = depthSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny)
-        elif self.algoritmo_selecionado == 'Profundidade Lim.':
+        elif self.sel_algorithm == 'Profundidade Lim.':
             self.path = depthLimitedSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors, 99)
-        elif self.algoritmo_selecionado == 'Aprof. Interativo':
+        elif self.sel_algorithm == 'Aprof. Interativo':
             self.path = iterativeDeepeningSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
-        elif self.algoritmo_selecionado == 'Bidirecional':
+        elif self.sel_algorithm == 'Bidirecional':
             self.path = bidirectionalSearch(self.start_pos, self.end_pos, self.grid, self.nx, self.ny, gridSuccessors)
     
     def update_animation(self):
@@ -266,8 +269,8 @@ class PathFinder:
                 # Verificando seleção no dropdown
                 if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.ui_element == self.dropdown:
-                        self.algoritmo_selecionado = event.text
-                        # print(f'Selecionado: {self.algoritmo_selecionado}')
+                        self.sel_algorithm = event.text
+                        # print(f'Selecionado: {self.sel_algorithm}')
                 
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.botao_ler_texto:
@@ -325,5 +328,5 @@ class PathFinder:
         sys.exit()
 
 if __name__ == "__main__":
-    app = PathFinder()
+    app = UserInterface()
     app.run()
