@@ -60,6 +60,6 @@ If the solution path exceeds the limit, the robot will not move.
    - If using a terminal, type: `python interface.py`
 2. Click the **"Reset Grid"** button if you want to generate a new random field.
 3. In the algorithm selection box, click the name of the algorithm you want to visualize.
-4. In the **"Initial Position"** field, enter the coordinates of the point where the robot should start, using the format: `(X,Y)`.
-5. In the **"Final Position"** field, enter the coordinates of the point where the robot should end, using the format: `(X,Y)`.
+4. In the **"Initial Position"** field, enter the coordinates of the point where the robot should start, using the format: `(X, Y)`.
+5. In the **"Final Position"** field, enter the coordinates of the point where the robot should end, using the format: `(X, Y)`.
 6. Click the **"Start"** button to execute the robot's animation path.

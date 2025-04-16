@@ -5,13 +5,18 @@ from math import sqrt
 
 # Rotina sucessores para Grade de Ocupação
 class WeightSearch:
-    def sucessores(atual, mapa, dim_x, dim_y):
+    def __init__(self, grid, nx, ny):
+        self.grid = grid
+        self.dim_x = nx
+        self.dim_y = ny
+    
+    def sucessores(self, atual):
         f = []
         x = atual[0]
         y = atual[1]
         
-        if y + 1 != dim_y:
-            if mapa[x][y + 1] == 1:
+        if y + 1 != self.dim_y:
+            if self.grid[x][y + 1] == 0:
                 linha = []
                 linha.append(x)
                 linha.append(y + 1)
@@ -19,8 +24,8 @@ class WeightSearch:
                 linha.append(custo)
                 f.append(linha)
                 
-        if x + 1 != dim_x:
-            if mapa[x + 1][y] == 1:
+        if x + 1 != self.dim_x:
+            if self.grid[x + 1][y] == 0:
                 linha = []
                 linha.append(x + 1)
                 linha.append(y)
@@ -28,18 +33,17 @@ class WeightSearch:
                 linha.append(custo)
                 f.append(linha)
         
-        if x - 1>=0:
-            if mapa[x - 1][y]==1:
+        if x - 1 >= 0:
+            if self.grid[x - 1][y] == 0:
                 linha = []
-                linha.append(x-1)
+                linha.append(x - 1)
                 linha.append(y)
                 custo = 2
                 linha.append(custo)
                 f.append(linha)
-                
         
         if y - 1 >= 0:
-            if mapa[x][y - 1] == 1:
+            if self.grid[x][y - 1] == 0:
                 linha = []
                 linha.append(x)
                 linha.append(y - 1)
@@ -49,19 +53,20 @@ class WeightSearch:
                 
         return f
 
-    def Gera_Ambiente(arquivo):
-        f = open(arquivo, "r")
+    # def Gera_Ambiente(self, arquivo):
+    #     f = open(arquivo, "r")
         
-        mapa = []
-        for str1 in f:
-            str1 = str1.strip("\n")
-            str1 = str1.split(",")
-            for i in range(len(str1)):
-                str1[i] = int(str1[i])
-            mapa.append(str1)
+    #     self.grid = []
+    #     for str1 in f:
+    #         str1 = str1.strip("\n")
+    #         str1 = str1.split(",")
+    #         for i in range(len(str1)):
+    #             str1[i] = int(str1[i])
+    #         self.grid.append(str1)
         
-        return mapa, len(mapa), len(mapa[0])
-
+    #     return self.grid, len(self.grid), len(self.grid[0])
+    
+    @staticmethod # Foi necessário colocar para sinalizar que esse código não precisa do "self"
     def h(p1, p2):
         if p1[0] < p2[0]:
             m1 = 3 # valor do custo da rotina sucessores para esta acao
@@ -74,34 +79,37 @@ class WeightSearch:
             m2 = 4 # valor do custo da rotina sucessores para esta acao
         
         # heurística SEM movimento em diagonal
-        #h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
+        h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
         # heurística COM movimento em diagonal
-        h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
+        #h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
+        
         return h
     
-    def custo_uniforme(self,inicio,fim,mapa,dim_x,dim_y):  
+    def custo_uniforme(self, inicio, fim):  
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
-        l1.insereUltimo(inicio,0,0,None)
-        l2.insereUltimo(inicio,0,0,None)
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
         linha = []
         linha.append(inicio)
         linha.append(0)
         visitado.append(linha)
+        
+        print("Estou chamando a função!")
         
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
             
             if atual.estado == fim:
                 caminho = []
-                caminho = l2.exibeArvore2(atual.estado,atual.valor1)
+                caminho = l2.exibeCaminho1(atual.estado, atual.valor1)
                 #print("Cópia da árvore:\n",l2.exibeLista())
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
                 return caminho, atual.valor2
         
-            filhos = self.sucessores(atual.estado,mapa,dim_x,dim_y)
-            #print(filhos)
+            filhos = self.sucessores(atual.estado)
+            
             for novo in filhos:
                 valor = []
                 valor.append(novo[0])
@@ -133,7 +141,7 @@ class WeightSearch:
                     
         return "Caminho não encontrado"      
     
-    def greedy(self,inicio,fim,mapa,dim_x,dim_y):  
+    def greedy(self, inicio, fim):  
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
@@ -154,7 +162,7 @@ class WeightSearch:
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
                 return caminho, atual.valor2
         
-            filhos = self.sucessores(atual.estado,mapa,dim_x,dim_y)
+            filhos = self.sucessores(atual.estado)
             for novo in filhos:
                 valor = []
                 valor.append(novo[0])
@@ -185,12 +193,12 @@ class WeightSearch:
                     
         return "Caminho não encontrado"
     
-    def a_estrela(self,inicio,fim,mapa,dim_x,dim_y):  
+    def a_estrela(self, inicio, fim):
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
-        l1.insereUltimo(inicio,0,0,None)
-        l2.insereUltimo(inicio,0,0,None)
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
         linha = []
         linha.append(inicio)
         linha.append(0)
@@ -198,54 +206,67 @@ class WeightSearch:
         
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
-            
+            print(atual.estado, atual.v2)
+            # print(f"atual: {atual.estado}, fim: {fim}")
             if atual.estado == fim:
                 caminho = []
-                caminho = l2.exibeArvore2(atual.estado,atual.valor1)
+                caminho = l2.exibeCaminho1(atual.estado, atual.v1)
                 #print("Cópia da árvore:\n",l2.exibeLista())
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, atual.valor2
+                #print(caminho)
+                return caminho, atual.v2
         
-            filhos = self.sucessores(atual.estado,mapa,dim_x,dim_y)
+            # print(self.sucessores(atual.estado))
+            # print(atual)
+            # print(atual.estado)
+            filhos = self.sucessores(atual.estado)
+            # print(f"filhos: {filhos}")
+            
             for novo in filhos:
+                #print(novo);
                 valor = []
                 valor.append(novo[0])
                 valor.append(novo[1])
+                
+                #print(f"valor: {valor}, fim: {fim}")
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.valor2 + novo[2]  # custo do caminho
-                v1 = v2 + self.h(valor,fim) # f3(n)
+                v2 = atual.v2 + novo[2]  # custo do caminho
+                v1 = v2 + self.h(valor, fim) # f3(n)
 
                 flag1 = True
                 flag2 = True
+                
                 for j in range(len(visitado)):
-                    if visitado[j][0]==valor:
-                        if visitado[j][1]<=v2:
+                    if visitado[j][0][0] == valor[0] and visitado[j][0][1] == valor[1]:
+                        if visitado[j][1] <= v2:
                             flag1 = False
                         else:
-                            visitado[j][1]=v2
+                            visitado[j][1] = v2
                             flag2 = False
                         break
 
                 if flag1:
                     l1.inserePos_X(valor, v1, v2, atual)
                     l2.insereUltimo(valor, v1, v2, atual)
+                    
                     if flag2:
                         linha = []
                         linha.append(valor)
                         linha.append(v2)
                         visitado.append(linha)
-                    
-        return "Caminho não encontrado"
+                        
+        print("Não foi possível encontrar o caminho")
+        return []
 
-    def aia_estrela(self,inicio,fim,mapa,dim_x,dim_y,limite):  
+    def aia_estrela(self, inicio, fim, limite):  
         
         while True:
             lim_exc = []
             l1 = listaDEnc()
             l2 = listaDEnc()
             visitado = []
-            l1.insereUltimo(inicio,0,0,None)
-            l2.insereUltimo(inicio,0,0,None)
+            l1.insereUltimo(inicio, 0, 0,None)
+            l2.insereUltimo(inicio, 0, 0,None)
             linha = []
             linha.append(inicio)
             linha.append(0)
@@ -261,7 +282,7 @@ class WeightSearch:
                     #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
                     return caminho, atual.valor2
             
-                filhos = self.sucessores(atual.estado,mapa,dim_x,dim_y)
+                filhos = self.sucessores(atual.estado)
                 
                 for novo in filhos:
                     valor = []
@@ -293,4 +314,5 @@ class WeightSearch:
                     else:
                         lim_exc.append(v1)
             limite = float(sum(lim_exc)/len(lim_exc))
-        return "Caminho não encontrado"
+            
+        return []

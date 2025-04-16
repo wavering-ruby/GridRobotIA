@@ -3,6 +3,7 @@ import sys
 import pygame_gui
 from GridGenerator import RandomProblemGenerator
 from UnweightSearch import UnweightSearch
+from WeightSearch import WeightSearch
 
 class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -28,7 +29,7 @@ class UserInterface:
         pygame.display.set_icon(pygame.image.load("PR_ATO_ICON.png"))
         
         # Configuração do dropdown
-        self.sel_algorithm = "Amplitude"
+        self.sel_algorithm = "A*"
         
         #Configurações da tela
         self.menu_width = 200
@@ -62,8 +63,8 @@ class UserInterface:
 
         # Dropdown
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
-            starting_option = 'Amplitude',
+            options_list = ['A*', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
+            starting_option = self.sel_algorithm,
             relative_rect = pygame.Rect((base_x, base_y + 20), (160, 40)),
             manager = self.manager
         )
@@ -151,9 +152,11 @@ class UserInterface:
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
         search = UnweightSearch(self.grid, self.nx, self.ny)
+        search2 = WeightSearch(self.grid, self.nx-1, self.ny-1)
         
-        if self.sel_algorithm == 'Amplitude':
-            self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
+        if self.sel_algorithm == 'A*':
+            # self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
+            self.path = search2.a_estrela(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':

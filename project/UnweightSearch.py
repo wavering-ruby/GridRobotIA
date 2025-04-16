@@ -11,9 +11,10 @@ class UnweightSearch:
         x, y = state
         moves = [
             (x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1),           # Movimentos cardinais
-            (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)  # Movimentos diagonais
+            # (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)  # Movimentos diagonais
         ]
         validMoves = []
+        
         for new_x, new_y in moves:
             if 0 <= new_x < self.nx and 0 <= new_y < self.ny and self.grid[new_x][new_y] == 0:
                 validMoves.append([new_x, new_y])

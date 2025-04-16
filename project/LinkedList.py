@@ -22,7 +22,7 @@ class listaDEnc:
             self.inserePrimeiro(s,v1,v2,p)
         else:
             atual = self.head
-            while atual.valor1 < v1:
+            while atual.v1 < v1:
                 atual = atual.proximo
                 if atual is None: break
             
