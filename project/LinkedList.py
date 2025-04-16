@@ -14,6 +14,30 @@ class listaDEnc:
             novo_no.proximo = self.head
             self.head.anterior = novo_no
             self.head = novo_no
+            
+    def inserePos_X(self, s, v1, v2, p):
+        
+        # se lista estiver vazia
+        if self.head is None:
+            self.inserePrimeiro(s,v1,v2,p)
+        else:
+            atual = self.head
+            while atual.valor1 < v1:
+                atual = atual.proximo
+                if atual is None: break
+            
+            if atual == self.head:
+                self.inserePrimeiro(s,v1,v2,p)
+            else:
+                if atual is None:
+                    self.insereUltimo(s,v1,v2,p)
+                else:
+                    novo_no = Node(p,s,v1,v2,None,None)
+                    aux = atual.anterior
+                    aux.proximo = novo_no
+                    novo_no.anterior = aux
+                    atual.anterior = novo_no
+                    novo_no.proximo = atual
 
     def insereUltimo(self, st, v1, v2, p):
         novo_no = Node(p, st, v1, v2, None, None)
@@ -60,23 +84,25 @@ class listaDEnc:
         
     def exibeLista(self):
         aux = self.head
-        str1 = []
+        str = []
         while aux != None:
             temp = [aux.estado, aux.v1]
             if aux.pai != None:
                 temp.append(aux.pai.estado)
             else:
                 temp.append("nó raiz")
-            str1.append(temp)
+            str.append(temp)
             aux = aux.proximo
-        return str1
+        return str
     
     def exibeCaminho(self):
         atual = self.tail
         path = []
+        
         while atual.pai is not None:
             path.append(atual.estado)
             atual = atual.pai
+            
         path.append(atual.estado)
         return path[::-1]
     
