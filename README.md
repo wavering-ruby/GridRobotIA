@@ -24,12 +24,15 @@ You will see, that some algorithms are used in weight cases or non weight cases 
 The robot starts on a initial point (initial node or cell) and needs to find a route to the objective point (final node or cell).
 
 ## 3. Technologies
+<div align="center">
 
 ![Python](https://img.shields.io/badge/Python_3.13.2-3776AB?style=for-the-badge&logo=python&logoColor=FFFFFF)
 
-For this project Python it's the only utilized language. The user interface was create using the librarys `Pygame` and `Pygame_gui`, because are more simple for the developers to organize the screen of the project.
+</div>
 
-This project also uses matrix for the grid and graph algorithms, so `numpy` it's installed to generate this and `random` for random values on the grid. In the future, will be used `time` for timing resolution of the graph, and others modifications.
+For this project Python it's the only utilized language. The user interface was create using the libraries `Pygame` and `Pygame_gui`, because are more simple for the developers to organize the screen of the project.
+
+This project also uses matrix for the grid and graph algorithms, so `numpy` it's installed to generate a grid with `0` and `random` for the position of the cell colision (with the value of nine). In the future, will be used `time` for timing resolution of the graph, and others modifications.
 
 ## 4. Running the Project
 
