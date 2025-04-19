@@ -29,7 +29,7 @@ class WeightSearch:
                 linha = []
                 linha.append(x + 1)
                 linha.append(y)
-                custo = 3
+                custo = 1
                 linha.append(custo)
                 f.append(linha)
         
@@ -38,7 +38,7 @@ class WeightSearch:
                 linha = []
                 linha.append(x - 1)
                 linha.append(y)
-                custo = 2
+                custo = 1
                 linha.append(custo)
                 f.append(linha)
         
@@ -47,36 +47,23 @@ class WeightSearch:
                 linha = []
                 linha.append(x)
                 linha.append(y - 1)
-                custo = 4
+                custo = 1
                 linha.append(custo)
                 f.append(linha)
                 
         return f
-
-    # def Gera_Ambiente(self, arquivo):
-    #     f = open(arquivo, "r")
-        
-    #     self.grid = []
-    #     for str1 in f:
-    #         str1 = str1.strip("\n")
-    #         str1 = str1.split(",")
-    #         for i in range(len(str1)):
-    #             str1[i] = int(str1[i])
-    #         self.grid.append(str1)
-        
-    #     return self.grid, len(self.grid), len(self.grid[0])
     
     @staticmethod # Foi necessário colocar para sinalizar que esse código não precisa do "self"
     def h(p1, p2):
         if p1[0] < p2[0]:
-            m1 = 3 # valor do custo da rotina sucessores para esta acao
+            m1 = 1 # valor do custo da rotina sucessores para esta acao
         else:
-            m1 = 2 # valor do custo da rotina sucessores para esta acao
+            m1 = 1 # valor do custo da rotina sucessores para esta acao
         
         if p1[1] < p2[1]:
             m2 = 1 # valor do custo da rotina sucessores para esta acao
         else:
-            m2 = 4 # valor do custo da rotina sucessores para esta acao
+            m2 = 1 # valor do custo da rotina sucessores para esta acao
         
         # heurística SEM movimento em diagonal
         h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
@@ -197,46 +184,44 @@ class WeightSearch:
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
+        
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
+        
         linha = []
         linha.append(inicio)
         linha.append(0)
+        
         visitado.append(linha)
         
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
-            print(atual.estado, atual.v2)
-            # print(f"atual: {atual.estado}, fim: {fim}")
+            # print(atual.estado, atual.v2)
+            
             if atual.estado == fim:
                 caminho = []
                 caminho = l2.exibeCaminho1(atual.estado, atual.v1)
-                #print("Cópia da árvore:\n",l2.exibeLista())
-                #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                #print(caminho)
                 return caminho, atual.v2
         
-            # print(self.sucessores(atual.estado))
-            # print(atual)
-            # print(atual.estado)
             filhos = self.sucessores(atual.estado)
-            # print(f"filhos: {filhos}")
             
             for novo in filhos:
-                #print(novo);
                 valor = []
                 valor.append(novo[0])
                 valor.append(novo[1])
                 
-                #print(f"valor: {valor}, fim: {fim}")
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
                 v2 = atual.v2 + novo[2]  # custo do caminho
+                #print("V2: ", v2);
                 v1 = v2 + self.h(valor, fim) # f3(n)
 
                 flag1 = True
                 flag2 = True
                 
                 for j in range(len(visitado)):
+                    print('Visitado: ', visitado[j][0])
+                    print('Valor: ', valor)
+                    print('V2:', v2)
                     if visitado[j][0][0] == valor[0] and visitado[j][0][1] == valor[1]:
                         if visitado[j][1] <= v2:
                             flag1 = False
@@ -265,8 +250,8 @@ class WeightSearch:
             l1 = listaDEnc()
             l2 = listaDEnc()
             visitado = []
-            l1.insereUltimo(inicio, 0, 0,None)
-            l2.insereUltimo(inicio, 0, 0,None)
+            l1.insereUltimo(inicio, 0, 0, None)
+            l2.insereUltimo(inicio, 0, 0, None)
             linha = []
             linha.append(inicio)
             linha.append(0)

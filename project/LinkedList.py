@@ -54,6 +54,7 @@ class listaDEnc:
             return None
         else:
             no = self.head
+            
             self.head = self.head.proximo
             if self.head is not None:
                 self.head.anterior = None
