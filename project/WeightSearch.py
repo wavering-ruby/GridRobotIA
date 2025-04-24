@@ -29,7 +29,7 @@ class WeightSearch:
                 linha = []
                 linha.append(x + 1)
                 linha.append(y)
-                custo = 1
+                custo = 3
                 linha.append(custo)
                 f.append(linha)
         
@@ -38,7 +38,7 @@ class WeightSearch:
                 linha = []
                 linha.append(x - 1)
                 linha.append(y)
-                custo = 1
+                custo = 2
                 linha.append(custo)
                 f.append(linha)
         
@@ -47,7 +47,7 @@ class WeightSearch:
                 linha = []
                 linha.append(x)
                 linha.append(y - 1)
-                custo = 1
+                custo = 4
                 linha.append(custo)
                 f.append(linha)
                 
@@ -56,21 +56,29 @@ class WeightSearch:
     @staticmethod # Foi necessário colocar para sinalizar que esse código não precisa do "self"
     def h(p1, p2):
         if p1[0] < p2[0]:
-            m1 = 1 # valor do custo da rotina sucessores para esta acao
+            m1 = 3 # valor do custo da rotina sucessores para esta acao
         else:
-            m1 = 1 # valor do custo da rotina sucessores para esta acao
+            m1 = 2 # valor do custo da rotina sucessores para esta acao
         
         if p1[1] < p2[1]:
             m2 = 1 # valor do custo da rotina sucessores para esta acao
         else:
-            m2 = 1 # valor do custo da rotina sucessores para esta acao
+            m2 = 4 # valor do custo da rotina sucessores para esta acao
         
         # heurística SEM movimento em diagonal
-        h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
+        #h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
         # heurística COM movimento em diagonal
-        #h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
+        h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
         
         return h
+        
+        # Heurística que o chat gpt recomendou
+        # dx = abs(p1[0] - p2[0])
+        # dy = abs(p1[1] - p2[1])
+        # # menor custo de mover uma linha ou coluna, independente do sinal
+        # low_row = 2   # min(2,3)
+        # low_col = 1   # min(1,4)
+        # return dx * low_row + dy * low_col
     
     def custo_uniforme(self, inicio, fim):  
         l1 = listaDEnc()
@@ -132,8 +140,8 @@ class WeightSearch:
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
-        l1.insereUltimo(inicio,0,0,None)
-        l2.insereUltimo(inicio,0,0,None)
+        l1.insereUltimo(inicio, 0, 0, None)
+        l2.insereUltimo(inicio, 0, 0, None)
         linha = []
         linha.append(inicio)
         linha.append(0)
@@ -142,21 +150,28 @@ class WeightSearch:
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
             
-            if atual.estado == fim:
+            if tuple(atual.estado) == tuple(fim):
+                print("Entrando no estado de fim")
+                
                 caminho = []
-                caminho = l2.exibeArvore2(atual.estado,atual.valor1)
+                caminho = l2.exibeCaminho2(atual.estado, atual.v1)
                 #print("Cópia da árvore:\n",l2.exibeLista())
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, atual.valor2
+                return caminho, atual.v2
         
-            filhos = self.sucessores(atual.estado)
+            filhos = self.sucessores(atual.estado)            
             for novo in filhos:
-                valor = []
-                valor.append(novo[0])
-                valor.append(novo[1])
+                valor = (novo[0], novo[1])
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.valor2 + novo[2]  # custo do caminho
-                v1 = self.h(valor,fim) # f2(n)
+                v2 = atual.v2 + novo[2]  # custo do caminho
+                v1 = self.h(valor, fim) # f2(n)
+                # print("Painel de Controle")
+                # print("Estado atual: ", atual.estado)
+                # print("V1: ", v1)
+                # print("V2: ", v2)
+                # print("Valor: ", valor)
+                # print("Visitado: ", visitado)
+                # print("---------------------------")
 
                 flag1 = True
                 flag2 = True
@@ -167,18 +182,17 @@ class WeightSearch:
                         else:
                             visitado[j][1]=v2
                             flag2 = False
+                            l1.inserePos_X(valor, v1, v2, atual)
                         break
 
                 if flag1:
                     l1.inserePos_X(valor, v1, v2, atual)
                     l2.insereUltimo(valor, v1, v2, atual)
                     if flag2:
-                        linha = []
-                        linha.append(valor)
-                        linha.append(v2)
-                        visitado.append(linha)
-                    
-        return "Caminho não encontrado"
+                        visitado.append([valor, v2])
+                        
+        print("Caminho não encontrado")
+        return [], 0
     
     def a_estrela(self, inicio, fim):
         l1 = listaDEnc()

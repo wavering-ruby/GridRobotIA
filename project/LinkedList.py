@@ -13,7 +13,7 @@ class listaDEnc:
         else:
             novo_no.proximo = self.head
             self.head.anterior = novo_no
-            self.head = novo_no
+        self.head = novo_no
             
     def inserePos_X(self, s, v1, v2, p):
         
@@ -47,7 +47,7 @@ class listaDEnc:
         else:
             self.tail.proximo = novo_no
             novo_no.anterior = self.tail
-            self.tail = novo_no
+        self.tail = novo_no
 
     def deletaPrimeiro(self):
         if self.head is None:
@@ -109,6 +109,7 @@ class listaDEnc:
     
     def exibeCaminho1(self, valor):
         atual = self.head
+        
         while atual.estado != valor:
             atual = atual.proximo
         path = []
@@ -118,3 +119,19 @@ class listaDEnc:
             atual = atual.pai
         path.append(atual.estado)
         return path
+    
+    def exibeCaminho2(self, s, v1):
+        atual = self.tail
+        
+        while atual.estado != s or atual.v1 != v1:
+            atual = atual.anterior
+        
+        path = []
+        
+        while atual.pai is not None:
+            path.append(atual.estado)
+            atual = atual.pai
+        
+        path.append(atual.estado)
+        print(path[::-1])
+        return path[::-1]

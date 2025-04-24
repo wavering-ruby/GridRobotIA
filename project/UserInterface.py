@@ -152,11 +152,13 @@ class UserInterface:
     def find_path(self):
         """Seleciona o algoritmo de busca baseado na escolha do usuário"""
         search = UnweightSearch(self.grid, self.nx, self.ny)
-        search2 = WeightSearch(self.grid, self.nx-1, self.ny-1)
+        search2 = WeightSearch(self.grid, self.nx, self.ny)
+        custo = 0;
         
         if self.sel_algorithm == 'A*':
             # self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
-            self.path = search2.a_estrela(self.start_pos, self.end_pos)
+            # self.path = search2.a_estrela(self.start_pos, self.end_pos)
+            self.path, custo = search2.greedy(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
