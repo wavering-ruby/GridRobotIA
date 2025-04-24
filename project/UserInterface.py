@@ -110,7 +110,9 @@ class UserInterface:
         self.screen.blit(label, label_rect)
     
     def reset_grid(self):
-        """Gera uma nova grid com obstáculos"""
+        """
+            Gera uma nova grid com obstáculos
+        """
         self.grid = RandomProblemGenerator(self.nx, self.ny, self.qtd_obstacles)
         self.start_pos = (self.sx, self.sy)
         self.end_pos = (self.ex, self.ey)
@@ -129,7 +131,9 @@ class UserInterface:
         self.path = []
     
     def load_character_image(self):
-        """Carrega a imagem do personagem ou cria uma padrão"""
+        """
+            Carrega a imagem do personagem ou cria uma padrão
+        """
         
         try:
             original_image = pygame.image.load("PR_ATO.png");
@@ -150,15 +154,19 @@ class UserInterface:
             pygame.draw.circle(self.character_image, (0, 0, 255), (size//2, size//2), size//2)
 
     def find_path(self):
-        """Seleciona o algoritmo de busca baseado na escolha do usuário"""
+        """
+            Seleciona o algoritmo de busca baseado na escolha do usuário
+        """
         search = UnweightSearch(self.grid, self.nx, self.ny)
+        
+        # Configurando o algoritmo de busca com pesos
         search2 = WeightSearch(self.grid, self.nx, self.ny)
         custo = 0;
         
-        if self.sel_algorithm == 'A*':
-            # self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
+        if self.sel_algorithm == 'Amplitude':
+            self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
             # self.path = search2.a_estrela(self.start_pos, self.end_pos)
-            self.path, custo = search2.greedy(self.start_pos, self.end_pos)
+            # self.path, custo = search2.greedy(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
@@ -169,7 +177,9 @@ class UserInterface:
             self.path = search.bidirectionalSearch(self.start_pos, self.end_pos)
     
     def update_animation(self):
-        """Atualiza a posição do personagem na animação"""
+        """
+            Atualiza a posição do personagem na animação
+        """
         if not self.animation_started or not self.path or self.current_segment >= len(self.path) - 1:
             return False  # Animação não iniciada ou concluída
         
@@ -198,7 +208,9 @@ class UserInterface:
         return True  # Animação em andamento
     
     def draw(self):
-        """Desenha toda a cena"""
+        """
+            Desenha toda a cena
+        """
         width, height = self.screen.get_size()
         cell_size = min(width // self.ny, height // self.nx)
         
@@ -250,7 +262,9 @@ class UserInterface:
         self.draw_button("Reset Grid", (menu_x + 20, 80, 160, 40), button_font)
     
     def run(self):
-        """Loop principal"""
+        """
+            Loop principal
+        """
         running = True
         while running:
             time_delta = self.clock.tick(60) / 1000.00  # Tempo em segundos

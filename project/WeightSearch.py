@@ -71,23 +71,15 @@ class WeightSearch:
         h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
         
         return h
-        
-        # Heurística que o chat gpt recomendou
-        # dx = abs(p1[0] - p2[0])
-        # dy = abs(p1[1] - p2[1])
-        # # menor custo de mover uma linha ou coluna, independente do sinal
-        # low_row = 2   # min(2,3)
-        # low_col = 1   # min(1,4)
-        # return dx * low_row + dy * low_col
     
-    def custo_uniforme(self, inicio, fim):  
+    def uniform_cost(self, start, end):  
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
-        l1.insereUltimo(inicio, 0, 0, None)
-        l2.insereUltimo(inicio, 0, 0, None)
+        l1.insereUltimo(start, 0, 0, None)
+        l2.insereUltimo(start, 0, 0, None)
         linha = []
-        linha.append(inicio)
+        linha.append(start)
         linha.append(0)
         visitado.append(linha)
         
@@ -96,12 +88,12 @@ class WeightSearch:
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
             
-            if atual.estado == fim:
+            if tuple(atual.estado) == tuple(end):
                 caminho = []
-                caminho = l2.exibeCaminho1(atual.estado, atual.valor1)
+                caminho = l2.exibeCaminho1(atual.estado, atual.v1)
                 #print("Cópia da árvore:\n",l2.exibeLista())
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, atual.valor2
+                return caminho, atual.v2
         
             filhos = self.sucessores(atual.estado)
             
@@ -111,17 +103,18 @@ class WeightSearch:
                 valor.append(novo[1])
                 
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.valor2 + novo[2]  # custo do caminho
+                v2 = atual.v2 + novo[2]  # custo do caminho
                 v1 = v2 # f1(n)
 
                 flag1 = True
                 flag2 = True
+                
                 for j in range(len(visitado)):
-                    if visitado[j][0]==valor:
-                        if visitado[j][1]<=v2:
+                    if visitado[j][0] == valor:
+                        if visitado[j][1] <= v2:
                             flag1 = False
                         else:
-                            visitado[j][1]=v2
+                            visitado[j][1] = v2
                             flag2 = False
                         break
 
@@ -134,7 +127,7 @@ class WeightSearch:
                         linha.append(v2)
                         visitado.append(linha)
                     
-        return "Caminho não encontrado"      
+        return []  
     
     def greedy(self, inicio, fim):  
         l1 = listaDEnc()
