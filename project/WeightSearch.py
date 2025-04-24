@@ -83,8 +83,6 @@ class WeightSearch:
         linha.append(0)
         visitado.append(linha)
         
-        print("Estou chamando a função!")
-        
         while l1.vazio() == False:
             atual = l1.deletaPrimeiro()
             
