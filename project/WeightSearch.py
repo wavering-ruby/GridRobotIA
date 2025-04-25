@@ -72,7 +72,7 @@ class WeightSearch:
         
         return h
     
-    def uniform_cost(self, start, end):  
+    def uniformCost(self, start, end): # Uniform Cost Search -> Working
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
@@ -87,11 +87,10 @@ class WeightSearch:
             atual = l1.deletaPrimeiro()
             
             if tuple(atual.estado) == tuple(end):
-                caminho = []
-                caminho = l2.exibeCaminho1(atual.estado, atual.v1)
-                #print("Cópia da árvore:\n",l2.exibeLista())
-                #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, atual.v2
+                path = []
+                path = l2.exibeCaminho2(atual.estado, atual.v1)
+                
+                return path, atual.v2
         
             filhos = self.sucessores(atual.estado)
             
@@ -127,7 +126,7 @@ class WeightSearch:
                     
         return []  
     
-    def greedy(self, inicio, fim):  
+    def greedySearch(self, inicio, fim): # Greedy Search -> Working
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
