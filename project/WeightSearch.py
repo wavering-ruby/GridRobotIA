@@ -10,7 +10,7 @@ class WeightSearch:
         self.dim_x = nx
         self.dim_y = ny
     
-    def sucessores(self, atual):
+    def successorsGrid(self, atual):
         f = []
         x = atual[0]
         y = atual[1]
@@ -72,7 +72,7 @@ class WeightSearch:
         
         return h
     
-    def uniformCost(self, start, end): # Uniform Cost Search -> Working
+    def uniformCostSearch(self, start, end): # Uniform Cost Search -> Working
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
@@ -92,7 +92,7 @@ class WeightSearch:
                 
                 return path, atual.v2
         
-            filhos = self.sucessores(atual.estado)
+            filhos = self.successorsGrid(atual.estado)
             
             for novo in filhos:
                 valor = []
@@ -148,7 +148,7 @@ class WeightSearch:
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
                 return caminho, atual.v2
         
-            filhos = self.sucessores(atual.estado)            
+            filhos = self.successorsGrid(atual.estado)            
             for novo in filhos:
                 valor = (novo[0], novo[1])
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
@@ -182,7 +182,7 @@ class WeightSearch:
                         
         return [], 0
     
-    def aStar(self, start, end): # A* Search -> Working
+    def aStarSearch(self, start, end): # A* Search -> Working
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
@@ -205,7 +205,7 @@ class WeightSearch:
                 path = l2.exibeCaminho2(atual.estado, atual.v1)
                 return path, atual.v2
         
-            filhos = self.sucessores(atual.estado)
+            filhos = self.successorsGrid(atual.estado)
             
             for novo in filhos:
                 valor = []
@@ -242,48 +242,46 @@ class WeightSearch:
         print("Não foi possível encontrar o caminho")
         return []
 
-    def aia_estrela(self, inicio, fim, limite):  
-        
+    def aiaStarSearch(self, start, end, limit):  # AIA* Search -> Working
         while True:
             lim_exc = []
             l1 = listaDEnc()
             l2 = listaDEnc()
             visitado = []
-            l1.insereUltimo(inicio, 0, 0, None)
-            l2.insereUltimo(inicio, 0, 0, None)
+            l1.insereUltimo(start, 0, 0, None)
+            l2.insereUltimo(start, 0, 0, None)
             linha = []
-            linha.append(inicio)
+            linha.append(start)
             linha.append(0)
             visitado.append(linha)
             
             while l1.vazio() == False:
                 atual = l1.deletaPrimeiro()
                 
-                if atual.estado == fim:
-                    caminho = []
-                    caminho = l2.exibeArvore2(atual.estado,atual.valor1)
-                    #print("Cópia da árvore:\n",l2.exibeLista())
-                    #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                    return caminho, atual.valor2
+                if tuple(atual.estado) == tuple(end):
+                    path = []
+                    path = l2.exibeCaminho2(atual.estado, atual.v1)
+                    return path, atual.v2
             
-                filhos = self.sucessores(atual.estado)
+                filhos = self.successorsGrid(atual.estado)
                 
                 for novo in filhos:
                     valor = []
                     valor.append(novo[0])
                     valor.append(novo[1])
+                    
                     # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                    v2 = atual.valor2 + novo[2]  # custo do caminho
-                    v1 = v2 + self.h(valor,fim) # f3(n)
-                    if v1<=limite:
+                    v2 = atual.v2 + novo[2]  # custo do caminho
+                    v1 = v2 + self.h(valor, end) # f3(n)
+                    if v1 <= limit:
                         flag1 = True
                         flag2 = True
                         for j in range(len(visitado)):
-                            if visitado[j][0]==valor:
-                                if visitado[j][1]<=v2:
+                            if visitado[j][0] == valor:
+                                if visitado[j][1] <= v2:
                                     flag1 = False
                                 else:
-                                    visitado[j][1]=v2
+                                    visitado[j][1] = v2
                                     flag2 = False
                                 break
         
@@ -297,6 +295,7 @@ class WeightSearch:
                                 visitado.append(linha)
                     else:
                         lim_exc.append(v1)
-            limite = float(sum(lim_exc)/len(lim_exc))
+                        
+            limit = float(sum(lim_exc) / len(lim_exc))
             
         return []

@@ -160,16 +160,10 @@ class UserInterface:
         search = UnweightSearch(self.grid, self.nx, self.ny)
         
         # Configurando o algoritmo de busca com pesos
-        search2 = WeightSearch(self.grid, self.nx, self.ny)
-        custo = 0;
+        # search2 = WeightSearch(self.grid, self.nx, self.ny)
+        # custo = 0;
         
         if self.sel_algorithm == 'A*':
-            # self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
-            # self.path = search2.a_estrela(self.start_pos, self.end_pos)
-            # self.path, custo = search2.greedy(self.start_pos, self.end_pos)
-            # self.path, custo = search2.uniformCost(self.start_pos, self.end_pos)
-            
-            self.path, custo = search2.a_estrela(self.start_pos, self.end_pos);
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
