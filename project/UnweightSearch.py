@@ -20,7 +20,7 @@ class UnweightSearch:
                 validMoves.append([new_x, new_y])
         return validMoves
 
-    def amplitudeSearch(self, start_pos, end_pos):
+    def breadthFirstSearch(self, start_pos, end_pos):
         """
         Busca em amplitude.
         Retorna o caminho encontrado ou uma lista vazia se não houver solução.

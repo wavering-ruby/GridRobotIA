@@ -29,7 +29,7 @@ class UserInterface:
         pygame.display.set_icon(pygame.image.load("PR_ATO_ICON.png"))
         
         # Configuração do dropdown
-        self.sel_algorithm = "A*"
+        self.sel_algorithm = "Amplitude";
         
         #Configurações da tela
         self.menu_width = 200
@@ -63,7 +63,7 @@ class UserInterface:
 
         # Dropdown
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list = ['A*', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
+            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
             starting_option = self.sel_algorithm,
             relative_rect = pygame.Rect((base_x, base_y + 20), (160, 40)),
             manager = self.manager
@@ -163,7 +163,8 @@ class UserInterface:
         # search2 = WeightSearch(self.grid, self.nx, self.ny)
         # custo = 0;
         
-        if self.sel_algorithm == 'A*':
+        if self.sel_algorithm == 'Amplitude':
+            self.path = search.breadthFirstSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
