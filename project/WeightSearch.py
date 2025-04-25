@@ -141,7 +141,6 @@ class WeightSearch:
             atual = l1.deletaPrimeiro()
             
             if tuple(atual.estado) == tuple(fim):
-                print("Entrando no estado de fim")
                 
                 caminho = []
                 caminho = l2.exibeCaminho2(atual.estado, atual.v1)
@@ -181,19 +180,18 @@ class WeightSearch:
                     if flag2:
                         visitado.append([valor, v2])
                         
-        print("Caminho não encontrado")
         return [], 0
     
-    def a_estrela(self, inicio, fim):
+    def aStar(self, start, end): # A* Search -> Working
         l1 = listaDEnc()
         l2 = listaDEnc()
         visitado = []
         
-        l1.insereUltimo(inicio, 0, 0, None)
-        l2.insereUltimo(inicio, 0, 0, None)
+        l1.insereUltimo(start, 0, 0, None)
+        l2.insereUltimo(start, 0, 0, None)
         
         linha = []
-        linha.append(inicio)
+        linha.append(start)
         linha.append(0)
         
         visitado.append(linha)
@@ -202,10 +200,10 @@ class WeightSearch:
             atual = l1.deletaPrimeiro()
             # print(atual.estado, atual.v2)
             
-            if atual.estado == fim:
-                caminho = []
-                caminho = l2.exibeCaminho1(atual.estado, atual.v1)
-                return caminho, atual.v2
+            if tuple(atual.estado) == tuple(end):
+                path = []
+                path = l2.exibeCaminho2(atual.estado, atual.v1)
+                return path, atual.v2
         
             filhos = self.sucessores(atual.estado)
             
@@ -216,16 +214,13 @@ class WeightSearch:
                 
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
                 v2 = atual.v2 + novo[2]  # custo do caminho
-                #print("V2: ", v2);
-                v1 = v2 + self.h(valor, fim) # f3(n)
+            
+                v1 = v2 + self.h(valor, end) # f3(n)
 
                 flag1 = True
                 flag2 = True
                 
                 for j in range(len(visitado)):
-                    print('Visitado: ', visitado[j][0])
-                    print('Valor: ', valor)
-                    print('V2:', v2)
                     if visitado[j][0][0] == valor[0] and visitado[j][0][1] == valor[1]:
                         if visitado[j][1] <= v2:
                             flag1 = False

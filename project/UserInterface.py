@@ -167,8 +167,9 @@ class UserInterface:
             # self.path = search.amplitudeSearch(self.start_pos, self.end_pos)
             # self.path = search2.a_estrela(self.start_pos, self.end_pos)
             # self.path, custo = search2.greedy(self.start_pos, self.end_pos)
+            # self.path, custo = search2.uniformCost(self.start_pos, self.end_pos)
             
-            self.path, custo = search2.uniformCost(self.start_pos, self.end_pos)
+            self.path, custo = search2.a_estrela(self.start_pos, self.end_pos);
         elif self.sel_algorithm == 'Profundidade':
             self.path = search.depthSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Profundidade Lim.':
