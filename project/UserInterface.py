@@ -234,16 +234,16 @@ class UserInterface:
         
         # Desenha início e fim
         pygame.draw.circle(self.screen, (0, 255, 0), 
-                         (self.start_pos[1] * cell_size + cell_size//2, 
-                          self.start_pos[0] * cell_size + cell_size//2), 10)
+                         (self.start_pos[1] * cell_size + cell_size // 2, 
+                          self.start_pos[0] * cell_size + cell_size // 2), 10)
         pygame.draw.circle(self.screen, (255, 0, 0), 
-                         (self.end_pos[1] * cell_size + cell_size//2, 
-                          self.end_pos[0] * cell_size + cell_size//2), 10)
+                         (self.end_pos[1] * cell_size + cell_size // 2, 
+                          self.end_pos[0] * cell_size + cell_size // 2), 10)
         
         # Desenha o personagem
         char_rect = self.character_image.get_rect(
-            center=(self.character_pos[1] * cell_size + cell_size//2, 
-                    self.character_pos[0] * cell_size + cell_size//2))
+            center=(self.character_pos[1] * cell_size + cell_size // 2, 
+                    self.character_pos[0] * cell_size + cell_size // 2))
         self.screen.blit(self.character_image, char_rect)
         
         
