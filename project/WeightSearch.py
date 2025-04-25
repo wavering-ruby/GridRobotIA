@@ -10,46 +10,46 @@ class WeightSearch:
         self.dim_x = nx
         self.dim_y = ny
     
-    def successorsGrid(self, atual):
+    def successorsGrid(self, actual):
         f = []
-        x = atual[0]
-        y = atual[1]
+        x = actual[0]
+        y = actual[1]
         
         if y + 1 != self.dim_y:
             if self.grid[x][y + 1] == 0:
-                linha = []
-                linha.append(x)
-                linha.append(y + 1)
-                custo = 1
-                linha.append(custo)
-                f.append(linha)
+                line = []
+                line.append(x)
+                line.append(y + 1)
+                cost = 1
+                line.append(cost)
+                f.append(line)
                 
         if x + 1 != self.dim_x:
             if self.grid[x + 1][y] == 0:
-                linha = []
-                linha.append(x + 1)
-                linha.append(y)
-                custo = 3
-                linha.append(custo)
-                f.append(linha)
+                line = []
+                line.append(x + 1)
+                line.append(y)
+                cost = 3
+                line.append(cost)
+                f.append(line)
         
         if x - 1 >= 0:
             if self.grid[x - 1][y] == 0:
-                linha = []
-                linha.append(x - 1)
-                linha.append(y)
-                custo = 2
-                linha.append(custo)
-                f.append(linha)
+                line = []
+                line.append(x - 1)
+                line.append(y)
+                cust = 2
+                line.append(cost)
+                f.append(line)
         
         if y - 1 >= 0:
             if self.grid[x][y - 1] == 0:
-                linha = []
-                linha.append(x)
-                linha.append(y - 1)
-                custo = 4
-                linha.append(custo)
-                f.append(linha)
+                line = []
+                line.append(x)
+                line.append(y - 1)
+                cost = 4
+                line.append(cost)
+                f.append(line)
                 
         return f
     
@@ -84,15 +84,15 @@ class WeightSearch:
         visitado.append(linha)
         
         while l1.vazio() == False:
-            atual = l1.deletaPrimeiro()
+            actual = l1.deletaPrimeiro()
             
-            if tuple(atual.estado) == tuple(end):
+            if tuple(actual.estado) == tuple(end):
                 path = []
-                path = l2.exibeCaminho2(atual.estado, atual.v1)
+                path = l2.exibeCaminho2(actual.estado, actual.v1)
                 
-                return path, atual.v2
+                return path, actual.v2
         
-            filhos = self.successorsGrid(atual.estado)
+            filhos = self.successorsGrid(actual.estado)
             
             for novo in filhos:
                 valor = []
@@ -100,7 +100,7 @@ class WeightSearch:
                 valor.append(novo[1])
                 
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.v2 + novo[2]  # custo do caminho
+                v2 = actual.v2 + novo[2]  # custo do caminho
                 v1 = v2 # f1(n)
 
                 flag1 = True
@@ -116,8 +116,8 @@ class WeightSearch:
                         break
 
                 if flag1:
-                    l1.inserePos_X(valor, v1, v2, atual)
-                    l2.insereUltimo(valor, v1, v2, atual)
+                    l1.inserePos_X(valor, v1, v2, actual)
+                    l2.insereUltimo(valor, v1, v2, actual)
                     if flag2:
                         linha = []
                         linha.append(valor)
@@ -138,21 +138,21 @@ class WeightSearch:
         visitado.append(linha)
         
         while l1.vazio() == False:
-            atual = l1.deletaPrimeiro()
+            actual = l1.deletaPrimeiro()
             
-            if tuple(atual.estado) == tuple(fim):
+            if tuple(actual.estado) == tuple(fim):
                 
                 caminho = []
-                caminho = l2.exibeCaminho2(atual.estado, atual.v1)
+                caminho = l2.exibeCaminho2(actual.estado, actual.v1)
                 #print("Cópia da árvore:\n",l2.exibeLista())
                 #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, atual.v2
+                return caminho, actual.v2
         
-            filhos = self.successorsGrid(atual.estado)            
+            filhos = self.successorsGrid(actual.estado)            
             for novo in filhos:
                 valor = (novo[0], novo[1])
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.v2 + novo[2]  # custo do caminho
+                v2 = actual.v2 + novo[2]  # custo do caminho
                 v1 = self.h(valor, fim) # f2(n)
                 # print("Painel de Controle")
                 # print("Estado atual: ", atual.estado)
@@ -171,12 +171,12 @@ class WeightSearch:
                         else:
                             visitado[j][1]=v2
                             flag2 = False
-                            l1.inserePos_X(valor, v1, v2, atual)
+                            l1.inserePos_X(valor, v1, v2, actual)
                         break
 
                 if flag1:
-                    l1.inserePos_X(valor, v1, v2, atual)
-                    l2.insereUltimo(valor, v1, v2, atual)
+                    l1.inserePos_X(valor, v1, v2, actual)
+                    l2.insereUltimo(valor, v1, v2, actual)
                     if flag2:
                         visitado.append([valor, v2])
                         
@@ -197,15 +197,15 @@ class WeightSearch:
         visitado.append(linha)
         
         while l1.vazio() == False:
-            atual = l1.deletaPrimeiro()
+            actual = l1.deletaPrimeiro()
             # print(atual.estado, atual.v2)
             
-            if tuple(atual.estado) == tuple(end):
+            if tuple(actual.estado) == tuple(end):
                 path = []
-                path = l2.exibeCaminho2(atual.estado, atual.v1)
-                return path, atual.v2
+                path = l2.exibeCaminho2(actual.estado, actual.v1)
+                return path, actual.v2
         
-            filhos = self.successorsGrid(atual.estado)
+            filhos = self.successorsGrid(actual.estado)
             
             for novo in filhos:
                 valor = []
@@ -213,7 +213,7 @@ class WeightSearch:
                 valor.append(novo[1])
                 
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = atual.v2 + novo[2]  # custo do caminho
+                v2 = actual.v2 + novo[2]  # custo do caminho
             
                 v1 = v2 + self.h(valor, end) # f3(n)
 
@@ -230,8 +230,8 @@ class WeightSearch:
                         break
 
                 if flag1:
-                    l1.inserePos_X(valor, v1, v2, atual)
-                    l2.insereUltimo(valor, v1, v2, atual)
+                    l1.inserePos_X(valor, v1, v2, actual)
+                    l2.insereUltimo(valor, v1, v2, actual)
                     
                     if flag2:
                         linha = []
@@ -256,14 +256,14 @@ class WeightSearch:
             visitado.append(linha)
             
             while l1.vazio() == False:
-                atual = l1.deletaPrimeiro()
+                actual = l1.deletaPrimeiro()
                 
-                if tuple(atual.estado) == tuple(end):
+                if tuple(actual.estado) == tuple(end):
                     path = []
-                    path = l2.exibeCaminho2(atual.estado, atual.v1)
-                    return path, atual.v2
+                    path = l2.exibeCaminho2(actual.estado, actual.v1)
+                    return path, actual.v2
             
-                filhos = self.successorsGrid(atual.estado)
+                filhos = self.successorsGrid(actual.estado)
                 
                 for novo in filhos:
                     valor = []
@@ -271,7 +271,7 @@ class WeightSearch:
                     valor.append(novo[1])
                     
                     # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                    v2 = atual.v2 + novo[2]  # custo do caminho
+                    v2 = actual.v2 + novo[2]  # custo do caminho
                     v1 = v2 + self.h(valor, end) # f3(n)
                     if v1 <= limit:
                         flag1 = True
@@ -286,8 +286,8 @@ class WeightSearch:
                                 break
         
                         if flag1:
-                            l1.inserePos_X(valor, v1, v2, atual)
-                            l2.insereUltimo(valor, v1, v2, atual)
+                            l1.inserePos_X(valor, v1, v2, actual)
+                            l2.insereUltimo(valor, v1, v2, actual)
                             if flag2:
                                 linha = []
                                 linha.append(valor)
