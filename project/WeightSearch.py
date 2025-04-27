@@ -239,7 +239,7 @@ class WeightSearch:
                         
         return [], 0
 
-    def aiaStarSearch(self, start, end, limit):  # AIA* Search -> Working
+    def aaiStarSearch(self, start, end, limit):  # AIA* Search -> Working
         while True:
             lim_exc = []
             l1 = LinkedList()

@@ -168,7 +168,6 @@ class UserInterface:
         """
             Carrega a imagem do personagem ou cria uma padrão
         """
-        
         try:
             original_image = pygame.image.load("PR_ATO.png");
             
@@ -185,7 +184,7 @@ class UserInterface:
             cell_size = min(self.grid_size_pixels // self.ny, self.grid_size_pixels // self.nx)
             size = int(cell_size * 0.6)
             self.character_image = pygame.Surface((size, size), pygame.SRCALPHA)
-            pygame.draw.circle(self.character_image, (0, 0, 255), (size//2, size//2), size//2)
+            pygame.draw.circle(self.character_image, (0, 0, 255), (size // 2, size // 2), size // 2)
 
     def find_path(self):
         """
@@ -214,7 +213,7 @@ class UserInterface:
         elif self.sel_algorithm == 'A*':
             self.path, self.cost = search2.aStarSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == "AAI*":
-            self.path, self.cost = search2.aiaStarSearch(self.start_pos, self.end_pos, 99)
+            self.path, self.cost = search2.aaiStarSearch(self.start_pos, self.end_pos, 99)
     
     def update_animation(self):
         """
@@ -247,15 +246,15 @@ class UserInterface:
             if(self.sel_selection == 'Com Peso'):
                 # --- MOSTRAR O POPUP AQUI ---
                 window_width, window_height = self.screen.get_size()
-                popup_width, popup_height = 300, 200
+                popup_width, popup_height = 300, 150
                 popup_x = (window_width - popup_width) // 2
                 popup_y = (window_height - popup_height) // 2
 
                 pygame_gui.windows.UIMessageWindow(
                     rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
-                    html_message = f'<b>Caminho concluído!</b><br><br>Custo total: {self.cost}',
+                    html_message = f'<b>Caminho concluído!</b><br>Custo total: {self.cost}',
                     manager = self.manager,
-                    window_title = 'Caminho Concluído!'
+                    window_title = f'Algoritmo utilizado: {self.sel_algorithm}'
                 )
                 # --- FIM POPUP ---
             return False  # Animação concluída
