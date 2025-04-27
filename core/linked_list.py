@@ -16,7 +16,6 @@ class LinkedList:
         self.head = novo_no
             
     def inserePos_X(self, s, v1, v2, p):
-        
         # se lista estiver vazia
         if self.head is None:
             self.inserePrimeiro(s,v1,v2,p)

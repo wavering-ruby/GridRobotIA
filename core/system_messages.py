@@ -7,7 +7,7 @@ class SystemMessages():
         self.window_width, self.window_height = screen_size
     
     def weightedSucessMessage(self, algorithm, cost):
-        popup_width, popup_height = 300, 120
+        popup_width, popup_height = 250, 160
         popup_x = (self.window_width - popup_width) // 2
         popup_y = (self.window_height - popup_height) // 2
 
@@ -18,15 +18,15 @@ class SystemMessages():
             window_title = f'Algoritmo utilizado: {algorithm}'
         )
         
-    def notPathMessage(self, path):
+    def notPathMessage(self):
         popup_width = 250
-        popup_height = 160 + (len(path) * 5)
+        popup_height = 160
         popup_x = (self.window_width - popup_width) // 2
         popup_y = (self.window_height - popup_height) // 2
 
         pygame_gui.windows.UIMessageWindow(
             rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
-            html_message = f'O sistema não conseguiu encontrar o caminho até o fim. <br>O caminho encontrado foi: {path}',
+            html_message = f"O sistema não conseguiu encontrar um caminho viável até o destino, verifique se o destino não está com obstáculos ou se o limite está menor!",
             manager = self.manager,
             window_title = "Caminho Incompleto"
         )
