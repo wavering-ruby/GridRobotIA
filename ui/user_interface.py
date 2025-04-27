@@ -4,6 +4,7 @@ import pygame_gui
 from core.grid_generator import RandomProblemGenerator
 from core.unweight_search import UnweightSearch
 from core.weight_search import WeightSearch
+from core.system_messages import SystemMessages
 
 class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
@@ -203,7 +204,7 @@ class UserInterface:
             "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
             "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
             "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),
-            "AAI*": lambda: weighted_search.aiaStarSearch(self.start_pos, self.end_pos, 99)
+            "AAI*": lambda: weighted_search.aaiStarSearch(self.start_pos, self.end_pos, 99)
         }
 
         result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
@@ -243,19 +244,9 @@ class UserInterface:
             self.character_pos = list(self.end_pos)
             
             if(self.sel_selection == 'Com Peso'):
-                # --- MOSTRAR O POPUP AQUI ---
-                window_width, window_height = self.screen.get_size()
-                popup_width, popup_height = 300, 150
-                popup_x = (window_width - popup_width) // 2
-                popup_y = (window_height - popup_height) // 2
-
-                pygame_gui.windows.UIMessageWindow(
-                    rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
-                    html_message = f'<b>Caminho concluído!</b><br>Custo total: {self.cost}',
-                    manager = self.manager,
-                    window_title = f'Algoritmo utilizado: {self.sel_algorithm}'
-                )
-                # --- FIM POPUP ---
+                SystemMessages.weightedSucessMesage(self.sel_algorithm, self.cost, self.screen.get_size(), self.manager)
+                
+                
             return False  # Animação concluída
 
         return True  # Animação em andamento
