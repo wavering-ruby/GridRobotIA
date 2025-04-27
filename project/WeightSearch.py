@@ -1,5 +1,3 @@
-import random as rd
-import Node
 from LinkedList import listaDEnc
 from math import sqrt
 
