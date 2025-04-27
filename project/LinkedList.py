@@ -133,5 +133,5 @@ class listaDEnc:
             atual = atual.pai
         
         path.append(atual.estado)
-        print(path[::-1])
+        
         return path[::-1]

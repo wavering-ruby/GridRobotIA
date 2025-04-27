@@ -134,7 +134,6 @@ class UserInterface:
         self.dropdown.kill()
         
         self.sel_algorithm = self.algorithm_option[0]
-        print(self.sel_algorithm)
         
         # Cria um novo dropdown com as opções atualizadas
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
