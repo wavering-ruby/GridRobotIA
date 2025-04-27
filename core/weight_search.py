@@ -149,17 +149,11 @@ class WeightSearch:
             filhos = self.successorsGrid(actual.estado)            
             for novo in filhos:
                 valor = (novo[0], novo[1])
+                
                 # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
                 v2 = actual.v2 + novo[2]  # custo do caminho
                 v1 = self.h(valor, fim) # f2(n)
-                # print("Painel de Controle")
-                # print("Estado atual: ", atual.estado)
-                # print("V1: ", v1)
-                # print("V2: ", v2)
-                # print("Valor: ", valor)
-                # print("Visitado: ", visitado)
-                # print("---------------------------")
-
+                
                 flag1 = True
                 flag2 = True
                 for j in range(len(visitado)):
@@ -196,7 +190,6 @@ class WeightSearch:
         
         while l1.vazio() == False:
             actual = l1.deletaPrimeiro()
-            # print(atual.estado, atual.v2)
             
             if tuple(actual.estado) == tuple(end):
                 path = []
@@ -293,6 +286,7 @@ class WeightSearch:
                     else:
                         lim_exc.append(v1)
                         
-            limit = float(sum(lim_exc) / len(lim_exc))
-            
-        return [], 0
+            if not lim_exc:  # Evitando a divisão por zero!
+                return [], 9999
+            else:
+                limit = sum(lim_exc) / len(lim_exc)

@@ -219,7 +219,21 @@ class UserInterface:
         """
             Atualiza a posição do personagem na animação
         """
+        
+        
+        # Carregando as mensagens para o usuário
+        message = SystemMessages(self.screen.get_size(), self.manager)
+        
+        # Versão bugada da mensagem de não encontrar o caminho
+        # if not self.path or self.current_segment >= len(self.path) - 1:
+        #     if not hasattr(self, '_path_checked'):  # Mostra a mensagem UMA vez
+        #         message = SystemMessages(self.screen.get_size(), self.manager)
+        #         message.notPathMessage(self.path)
+        #         self._path_checked = True
+        #     return False
+        
         if not self.animation_started or not self.path or self.current_segment >= len(self.path) - 1:
+            message.notPathMessage(self.path)
             return False  # Animação não iniciada ou concluída
         
         current_time = pygame.time.get_ticks()
@@ -244,9 +258,10 @@ class UserInterface:
             self.character_pos = list(self.end_pos)
             
             if(self.sel_selection == 'Com Peso'):
-                SystemMessages.weightedSucessMesage(self.sel_algorithm, self.cost, self.screen.get_size(), self.manager)
+                message.weightedSucessMessage(self.sel_algorithm, self.cost)
                 
-                
+            if(self.path[-1] != list(self.end_pos)):
+                message.notPathMessage(self.path)
             return False  # Animação concluída
 
         return True  # Animação em andamento
