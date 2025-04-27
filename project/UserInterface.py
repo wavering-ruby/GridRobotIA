@@ -190,30 +190,29 @@ class UserInterface:
         """
             Seleciona o algoritmo de busca baseado na escolha do usuário
         """
-        search = UnweightSearch(self.grid, self.nx, self.ny)
-        
-        # Configurando o algoritmo de busca com pesos
-        search2 = WeightSearch(self.grid, self.nx, self.ny)
+        unweighted_search = UnweightSearch(self.grid, self.nx, self.ny)
+        weighted_search = WeightSearch(self.grid, self.nx, self.ny)
         self.cost = 0
         
-        if self.sel_algorithm == 'Amplitude':
-            self.path = search.breadthFirstSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'Profundidade':
-            self.path = search.depthSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'Profundidade Lim.':
-            self.path = search.depthLimitedSearch(self.start_pos, self.end_pos, 99)
-        elif self.sel_algorithm == 'Aprof. Interativo':
-            self.path = search.iterativeDeepeningSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'Bidirecional':
-            self.path = search.bidirectionalSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'Custo Uniforme':
-            self.path, self.cost = search2.uniformCostSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'Guloso':
-            self.path, self.cost = search2.greedySearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == 'A*':
-            self.path, self.cost = search2.aStarSearch(self.start_pos, self.end_pos)
-        elif self.sel_algorithm == "AAI*":
-            self.path, self.cost = search2.aaiStarSearch(self.start_pos, self.end_pos, 99)
+        algorithm_actions = {
+            "Amplitude": lambda: unweighted_search.breadthFirstSearch(self.start_pos, self.end_pos),
+            "Profundidade": lambda: unweighted_search.depthSearch(self.start_pos, self.end_pos),
+            "Profundidade Lim.": lambda: unweighted_search.depthLimitedSearch(self.start_pos, self.end_pos, 99),
+            "Aprof. Interativo": lambda: unweighted_search.iterativeDeepeningSearch(self.start_pos, self.end_pos),
+            "Bidirecional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
+            "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
+            "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
+            "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),
+            "AAI*": lambda: weighted_search.aiaStarSearch(self.start_pos, self.end_pos, 99)
+        }
+
+        result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
+        
+        if result is not None:
+            if isinstance(result, tuple):
+                self.path, self.cost = result
+            else:
+                self.path = result
     
     def update_animation(self):
         """
