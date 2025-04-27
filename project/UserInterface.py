@@ -15,6 +15,8 @@ class UserInterface:
         self.sx = 0
         self.sy = 0
         
+        self.cost = 0
+        
         # Posições finais
         self.ex = grid_size[0] - 1
         self.ey = grid_size[1] - 1
@@ -120,7 +122,7 @@ class UserInterface:
             text = 'Iniciar',
             manager = self.manager
         )
-
+        
     def draw_button(self, text, rect, font):
         pygame.draw.rect(self.screen, (70, 70, 70), rect, border_radius = 8)
         pygame.draw.rect(self.screen, (200, 200, 200), rect, 2, border_radius = 8)
@@ -128,15 +130,18 @@ class UserInterface:
         label_rect = label.get_rect(center = (rect[0] + rect[2] // 2, rect[1] + rect[3] // 2))
         self.screen.blit(label, label_rect)
     
-    def update_dropdown(self):
+    def update_algorithm_dropdown(self):
         self.dropdown.kill()
+        
+        self.sel_algorithm = self.algorithm_option[0]
+        print(self.sel_algorithm)
         
         # Cria um novo dropdown com as opções atualizadas
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list=self.algorithm_option,
-            starting_option=self.algorithm_option,
-            relative_rect=pygame.Rect((self.grid_size_pixels + 20, 280), (160, 40)),
-            manager=self.manager
+            options_list = self.algorithm_option,
+            starting_option = self.sel_algorithm,
+            relative_rect = pygame.Rect((self.grid_size_pixels + 20, 280), (160, 40)),
+            manager = self.manager
         )
     
     def reset_grid(self):
@@ -190,8 +195,8 @@ class UserInterface:
         search = UnweightSearch(self.grid, self.nx, self.ny)
         
         # Configurando o algoritmo de busca com pesos
-        # search2 = WeightSearch(self.grid, self.nx, self.ny)
-        # custo = 0;
+        search2 = WeightSearch(self.grid, self.nx, self.ny)
+        self.cost = 0
         
         if self.sel_algorithm == 'Amplitude':
             self.path = search.breadthFirstSearch(self.start_pos, self.end_pos)
@@ -203,6 +208,14 @@ class UserInterface:
             self.path = search.iterativeDeepeningSearch(self.start_pos, self.end_pos)
         elif self.sel_algorithm == 'Bidirecional':
             self.path = search.bidirectionalSearch(self.start_pos, self.end_pos)
+        elif self.sel_algorithm == 'Custo Uniforme':
+            self.path, self.cost = search2.uniformCostSearch(self.start_pos, self.end_pos)
+        elif self.sel_algorithm == 'Guloso':
+            self.path, self.cost = search2.greedySearch(self.start_pos, self.end_pos)
+        elif self.sel_algorithm == 'A*':
+            self.path, self.cost = search2.aStarSearch(self.start_pos, self.end_pos)
+        elif self.sel_algorithm == "AAI*":
+            self.path, self.cost = search2.aiaStarSearch(self.start_pos, self.end_pos, 99)
     
     def update_animation(self):
         """
@@ -231,6 +244,21 @@ class UserInterface:
             self.last_move_time = current_time
         if self.current_segment >= len(self.path) - 1:
             self.character_pos = list(self.end_pos)
+            
+            if(self.sel_selection == 'Com Peso'):
+                # --- MOSTRAR O POPUP AQUI ---
+                window_width, window_height = self.screen.get_size()
+                popup_width, popup_height = 300, 200
+                popup_x = (window_width - popup_width) // 2
+                popup_y = (window_height - popup_height) // 2
+
+                pygame_gui.windows.UIMessageWindow(
+                    rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
+                    html_message = f'<b>Caminho concluído!</b><br><br>Custo total: {self.cost}',
+                    manager = self.manager,
+                    window_title = 'Caminho Concluído!'
+                )
+                # --- FIM POPUP ---
             return False  # Animação concluída
 
         return True  # Animação em andamento
@@ -318,7 +346,6 @@ class UserInterface:
                 if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     if event.ui_element == self.dropdown:
                         self.sel_algorithm = event.text
-                        # print(f'Selecionado: {self.sel_algorithm}')
                     
                     if event.ui_element == self.dropdown_mode_selection:
                         self.sel_selection = event.text
@@ -326,7 +353,8 @@ class UserInterface:
                             self.algorithm_option = ['Custo Uniforme', 'Guloso', 'A*', 'AAI*']
                         else:
                             self.algorithm_option = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional']
-                        self.update_dropdown()
+                        self.update_algorithm_dropdown()
+                
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.botao_ler_texto:
                         starting_pos = self.input_text.get_text()

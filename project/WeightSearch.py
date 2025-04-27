@@ -38,7 +38,7 @@ class WeightSearch:
                 line = []
                 line.append(x - 1)
                 line.append(y)
-                cust = 2
+                cost = 2
                 line.append(cost)
                 f.append(line)
         
@@ -124,7 +124,7 @@ class WeightSearch:
                         linha.append(v2)
                         visitado.append(linha)
                     
-        return []  
+        return [], actual.v2
     
     def greedySearch(self, inicio, fim): # Greedy Search -> Working
         l1 = listaDEnc()
@@ -239,8 +239,7 @@ class WeightSearch:
                         linha.append(v2)
                         visitado.append(linha)
                         
-        print("Não foi possível encontrar o caminho")
-        return []
+        return [], 0
 
     def aiaStarSearch(self, start, end, limit):  # AIA* Search -> Working
         while True:
@@ -298,4 +297,4 @@ class WeightSearch:
                         
             limit = float(sum(lim_exc) / len(lim_exc))
             
-        return []
+        return [], 0
