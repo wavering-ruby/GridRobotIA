@@ -29,7 +29,11 @@ class UserInterface:
         pygame.display.set_icon(pygame.image.load("PR_ATO_ICON.png"))
         
         # Configuração do dropdown
-        self.sel_algorithm = "Amplitude";
+        self.sel_selection = "Sem Peso"
+        self.sel_algorithm = "Amplitude"
+        
+        # Criando configurações para trocar de peso
+        self.algorithm_option = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional']
         
         #Configurações da tela
         self.menu_width = 200
@@ -54,50 +58,65 @@ class UserInterface:
         base_y = 200
         # espaco = 40
 
-        # Legenda do Dropdown
+        # Legenda do Switch Button (Método de Busca)
+        self.label_mode_selection = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect((base_x, base_y), (160, 20)),
+            text = "Método de Busca:",
+            manager = self.manager
+        )
+
+        # Switch Button (Com Peso / Sem Peso)
+        self.dropdown_mode_selection = pygame_gui.elements.UIDropDownMenu(
+            options_list = ['Sem Peso', 'Com Peso'],
+            starting_option = self.sel_selection,
+            relative_rect = pygame.Rect((base_x, base_y + 20), (160, 30)),
+            manager = self.manager
+        )
+
+        # Legenda do Dropdown (Algoritmo)
         self.label_dropdown = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((base_x, base_y), (160, 20)),
+            relative_rect = pygame.Rect((base_x, base_y + 60), (160, 20)),
             text = "Algoritmo:",
             manager = self.manager
         )
 
-        # Dropdown
+        # Dropdown (Algoritmo)
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
+            options_list = self.algorithm_option,
             starting_option = self.sel_algorithm,
-            relative_rect = pygame.Rect((base_x, base_y + 20), (160, 40)),
+            relative_rect = pygame.Rect((base_x, base_y + 80), (160, 40)),
             manager = self.manager
         )
 
         # Legenda da Posição Inicial
         self.label_x = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 70), (160, 20)),
+            relative_rect = pygame.Rect((base_x, base_y + 130), (160, 20)),
             text = "Posição Inicial (X, Y)",
             manager = self.manager
         )
 
         # Campo Inicial
         self.input_text = pygame_gui.elements.UITextEntryLine(
-            relative_rect = pygame.Rect((base_x, base_y + 90), (160, 30)),
+            relative_rect = pygame.Rect((base_x, base_y + 150), (160, 30)),
             manager = self.manager
         )
 
-        # Lengenda da Posição Final
+        # Legenda da Posição Final
         self.label_y = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 130), (160, 20)),
+            relative_rect = pygame.Rect((base_x, base_y + 190), (160, 20)),
             text = "Posição Final (X, Y):",
             manager = self.manager
         )
 
         # Campo Final
         self.input_text2 = pygame_gui.elements.UITextEntryLine(
-            relative_rect = pygame.Rect((base_x, base_y + 150), (160, 30)),
-            manager = self.manager
+            relative_rect=pygame.Rect((base_x, base_y + 210), (160, 30)),
+            manager=self.manager
         )
 
         # Botão de Início
         self.botao_ler_texto = pygame_gui.elements.UIButton(
-            relative_rect = pygame.Rect((base_x, base_y + 190), (160, 30)),
+            relative_rect = pygame.Rect((base_x, base_y + 250), (160, 30)),
             text = 'Iniciar',
             manager = self.manager
         )
@@ -108,6 +127,17 @@ class UserInterface:
         label = font.render(text, True, (255, 255, 255))
         label_rect = label.get_rect(center = (rect[0] + rect[2] // 2, rect[1] + rect[3] // 2))
         self.screen.blit(label, label_rect)
+    
+    def update_dropdown(self):
+        self.dropdown.kill()
+        
+        # Cria um novo dropdown com as opções atualizadas
+        self.dropdown = pygame_gui.elements.UIDropDownMenu(
+            options_list=self.algorithm_option,
+            starting_option=self.algorithm_option,
+            relative_rect=pygame.Rect((self.grid_size_pixels + 20, 280), (160, 40)),
+            manager=self.manager
+        )
     
     def reset_grid(self):
         """
@@ -240,7 +270,7 @@ class UserInterface:
         
         # Desenha o personagem
         char_rect = self.character_image.get_rect(
-            center=(self.character_pos[1] * cell_size + cell_size // 2, 
+            center = (self.character_pos[1] * cell_size + cell_size // 2, 
                     self.character_pos[0] * cell_size + cell_size // 2))
         self.screen.blit(self.character_image, char_rect)
         
@@ -289,7 +319,14 @@ class UserInterface:
                     if event.ui_element == self.dropdown:
                         self.sel_algorithm = event.text
                         # print(f'Selecionado: {self.sel_algorithm}')
-                
+                    
+                    if event.ui_element == self.dropdown_mode_selection:
+                        self.sel_selection = event.text
+                        if(self.sel_selection == 'Com Peso'):
+                            self.algorithm_option = ['Custo Uniforme', 'Guloso', 'A*', 'AAI*']
+                        else:
+                            self.algorithm_option = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional']
+                        self.update_dropdown()
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.botao_ler_texto:
                         starting_pos = self.input_text.get_text()
