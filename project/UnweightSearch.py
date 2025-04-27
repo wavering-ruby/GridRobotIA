@@ -1,4 +1,4 @@
-from LinkedList import listaDEnc
+from LinkedList import LinkedList
 
 class UnweightSearch:
     def __init__(self, grid, nx, ny):
@@ -25,8 +25,8 @@ class UnweightSearch:
         Busca em amplitude.
         Retorna o caminho encontrado ou uma lista vazia se não houver solução.
         """
-        l1 = listaDEnc()
-        l2 = listaDEnc()
+        l1 = LinkedList()
+        l2 = LinkedList()
         l1.insereUltimo(start_pos, 0, 0, None)
         l2.insereUltimo(start_pos, 0, 0, None)
         visitado = [[start_pos, 0]]
@@ -55,7 +55,7 @@ class UnweightSearch:
         Busca em profundidade.
         Retorna o caminho encontrado ou uma lista vazia se não houver solução.
         """
-        pilha = listaDEnc()
+        pilha = LinkedList()
         visitados = set()
         pilha.insereUltimo(start_pos, 0, 0, None)
         visitados.add(tuple(start_pos))
@@ -95,8 +95,8 @@ class UnweightSearch:
         Busca em profundidade limitada.
         Retorna o caminho encontrado ou None se o objetivo não for alcançado.
         """
-        l1 = listaDEnc()  # Para busca
-        l2 = listaDEnc()  # Para reconstruir o caminho
+        l1 = LinkedList()  # Para busca
+        l2 = LinkedList()  # Para reconstruir o caminho
         l1.insereUltimo(start_pos, 0, 0, None)
         l2.insereUltimo(start_pos, 0, 0, None)
         visitado = [[start_pos, 0]]
@@ -135,10 +135,10 @@ class UnweightSearch:
         Realiza a busca a partir do início e do fim simultaneamente.
         Retorna o caminho encontrado ou uma lista vazia se não houver solução.
         """
-        l1 = listaDEnc()  # Busca a partir do início
-        l2 = listaDEnc()  # Para reconstruir o caminho (início)
-        l3 = listaDEnc()  # Busca a partir do fim
-        l4 = listaDEnc()  # Para reconstruir o caminho (fim)
+        l1 = LinkedList()  # Busca a partir do início
+        l2 = LinkedList()  # Para reconstruir o caminho (início)
+        l3 = LinkedList()  # Busca a partir do fim
+        l4 = LinkedList()  # Para reconstruir o caminho (fim)
         l1.insereUltimo(start_pos, 0, 0, None)
         l2.insereUltimo(start_pos, 0, 0, None)
         l3.insereUltimo(end_pos, 0, 0, None)

@@ -1,4 +1,4 @@
-from LinkedList import listaDEnc
+from LinkedList import LinkedList
 from math import sqrt
 
 # Rotina sucessores para Grade de Ocupação
@@ -71,8 +71,8 @@ class WeightSearch:
         return h
     
     def uniformCostSearch(self, start, end): # Uniform Cost Search -> Working
-        l1 = listaDEnc()
-        l2 = listaDEnc()
+        l1 = LinkedList()
+        l2 = LinkedList()
         visitado = []
         l1.insereUltimo(start, 0, 0, None)
         l2.insereUltimo(start, 0, 0, None)
@@ -125,8 +125,8 @@ class WeightSearch:
         return [], actual.v2
     
     def greedySearch(self, inicio, fim): # Greedy Search -> Working
-        l1 = listaDEnc()
-        l2 = listaDEnc()
+        l1 = LinkedList()
+        l2 = LinkedList()
         visitado = []
         l1.insereUltimo(inicio, 0, 0, None)
         l2.insereUltimo(inicio, 0, 0, None)
@@ -181,8 +181,8 @@ class WeightSearch:
         return [], 0
     
     def aStarSearch(self, start, end): # A* Search -> Working
-        l1 = listaDEnc()
-        l2 = listaDEnc()
+        l1 = LinkedList()
+        l2 = LinkedList()
         visitado = []
         
         l1.insereUltimo(start, 0, 0, None)
@@ -242,8 +242,8 @@ class WeightSearch:
     def aiaStarSearch(self, start, end, limit):  # AIA* Search -> Working
         while True:
             lim_exc = []
-            l1 = listaDEnc()
-            l2 = listaDEnc()
+            l1 = LinkedList()
+            l2 = LinkedList()
             visitado = []
             l1.insereUltimo(start, 0, 0, None)
             l2.insereUltimo(start, 0, 0, None)
