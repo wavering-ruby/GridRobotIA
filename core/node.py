@@ -1,8 +1,8 @@
 class Node(object):
-    def __init__(self, pai = None, estado = None, v1 = None, v2 = None, anterior = None,  proximo = None):
-        self.pai       = pai
-        self.estado    = estado
-        self.v1        = v1
-        self.v2        = v2
-        self.anterior  = anterior
-        self.proximo   = proximo
+    def __init__(self, parent = None, state = None, v1 = None, v2 = None, previous = None, next = None):
+        self.parent    = parent
+        self.state     = state
+        self.v1        = v1  # Typically represents priority/f-score in search algorithms
+        self.v2        = v2  # Typically represents path cost/g-score in search algorithms
+        self.previous  = previous
+        self.next      = next

@@ -1,292 +1,283 @@
 from .linked_list import LinkedList
 from math import sqrt
 
-# Rotina sucessores para Grade de Ocupação
-class WeightSearch:
+# Successor routine for Occupancy Grid
+class WeightedSearch:
     def __init__(self, grid, nx, ny):
         self.grid = grid
         self.dim_x = nx
         self.dim_y = ny
     
-    def successorsGrid(self, actual):
-        f = []
-        x = actual[0]
-        y = actual[1]
+    def getSuccessors(self, current):
+        successors = []
+        x = current[0]
+        y = current[1]
         
         if y + 1 != self.dim_y:
             if self.grid[x][y + 1] == 0:
-                line = []
-                line.append(x)
-                line.append(y + 1)
+                successor = []
+                successor.append(x)
+                successor.append(y + 1)
                 cost = 1
-                line.append(cost)
-                f.append(line)
+                successor.append(cost)
+                successors.append(successor)
                 
         if x + 1 != self.dim_x:
             if self.grid[x + 1][y] == 0:
-                line = []
-                line.append(x + 1)
-                line.append(y)
+                successor = []
+                successor.append(x + 1)
+                successor.append(y)
                 cost = 3
-                line.append(cost)
-                f.append(line)
+                successor.append(cost)
+                successors.append(successor)
         
         if x - 1 >= 0:
             if self.grid[x - 1][y] == 0:
-                line = []
-                line.append(x - 1)
-                line.append(y)
+                successor = []
+                successor.append(x - 1)
+                successor.append(y)
                 cost = 2
-                line.append(cost)
-                f.append(line)
+                successor.append(cost)
+                successors.append(successor)
         
         if y - 1 >= 0:
             if self.grid[x][y - 1] == 0:
-                line = []
-                line.append(x)
-                line.append(y - 1)
+                successor = []
+                successor.append(x)
+                successor.append(y - 1)
                 cost = 4
-                line.append(cost)
-                f.append(line)
+                successor.append(cost)
+                successors.append(successor)
                 
-        return f
+        return successors
     
-    @staticmethod # Foi necessário colocar para sinalizar que esse código não precisa do "self"
-    def h(p1, p2):
+    @staticmethod
+    def heuristic(p1, p2):
         if p1[0] < p2[0]:
-            m1 = 3 # valor do custo da rotina sucessores para esta acao
+            m1 = 3  # action cost from successor routine
         else:
-            m1 = 2 # valor do custo da rotina sucessores para esta acao
+            m1 = 2  # action cost from successor routine
         
         if p1[1] < p2[1]:
-            m2 = 1 # valor do custo da rotina sucessores para esta acao
+            m2 = 1  # action cost from successor routine
         else:
-            m2 = 4 # valor do custo da rotina sucessores para esta acao
+            m2 = 4  # action cost from successor routine
         
-        # heurística SEM movimento em diagonal
-        #h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
-        # heurística COM movimento em diagonal
-        h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] -p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
+        # Heuristic WITHOUT diagonal movement
+        # h = abs(p1[0] - p2[0]) * m1 + abs(p1[1] - p2[1]) * m2
+        # Heuristic WITH diagonal movement
+        h = sqrt(m1 * (p1[0] - p2[0]) * (p1[0] - p2[0]) + m2 * (p1[1] - p2[1]) * (p1[1] - p2[1]))
         
         return h
     
-    def uniformCostSearch(self, start, end): # Uniform Cost Search -> Working
-        l1 = LinkedList()
-        l2 = LinkedList()
-        visitado = []
-        l1.insereUltimo(start, 0, 0, None)
-        l2.insereUltimo(start, 0, 0, None)
-        linha = []
-        linha.append(start)
-        linha.append(0)
-        visitado.append(linha)
+    def uniformCostSearch(self, start, end):  # Uniform Cost Search -> Working
+        frontier = LinkedList()
+        path_nodes = LinkedList()
+        visited = []
+        frontier.insertLast(start, 0, 0, None)
+        path_nodes.insertLast(start, 0, 0, None)
+        entry = []
+        entry.append(start)
+        entry.append(0)
+        visited.append(entry)
         
-        while l1.vazio() == False:
-            actual = l1.deletaPrimeiro()
+        while frontier.empty() == False:
+            current = frontier.deleteFirst()
             
-            if tuple(actual.estado) == tuple(end):
-                path = []
-                path = l2.exibeCaminho2(actual.estado, actual.v1)
-                
-                return path, actual.v2
+            if tuple(current.state) == tuple(end):
+                path = path_nodes.displayPath2(current.state, current.v1)
+                return path, current.v2
         
-            filhos = self.successorsGrid(actual.estado)
+            successors = self.getSuccessors(current.state)
             
-            for novo in filhos:
-                valor = []
-                valor.append(novo[0])
-                valor.append(novo[1])
+            for successor in successors:
+                position = []
+                position.append(successor[0])
+                position.append(successor[1])
                 
-                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = actual.v2 + novo[2]  # custo do caminho
-                v1 = v2 # f1(n)
+                # CALCULATE COST FROM ORIGIN TO CURRENT NODE
+                path_cost = current.v2 + successor[2]  # path cost
+                priority = path_cost  # f1(n)
 
-                flag1 = True
-                flag2 = True
+                should_add = True
+                should_update = True
                 
-                for j in range(len(visitado)):
-                    if visitado[j][0] == valor:
-                        if visitado[j][1] <= v2:
-                            flag1 = False
+                for entry in visited:
+                    if entry[0] == position:
+                        if entry[1] <= path_cost:
+                            should_add = False
                         else:
-                            visitado[j][1] = v2
-                            flag2 = False
+                            entry[1] = path_cost
+                            should_update = False
                         break
 
-                if flag1:
-                    l1.inserePos_X(valor, v1, v2, actual)
-                    l2.insereUltimo(valor, v1, v2, actual)
-                    if flag2:
-                        linha = []
-                        linha.append(valor)
-                        linha.append(v2)
-                        visitado.append(linha)
+                if should_add:
+                    frontier.insertPos_X(position, priority, path_cost, current)
+                    path_nodes.insertLast(position, priority, path_cost, current)
+                    if should_update:
+                        new_entry = []
+                        new_entry.append(position)
+                        new_entry.append(path_cost)
+                        visited.append(new_entry)
                     
-        return [], actual.v2
+        return [], current.v2
     
-    def greedySearch(self, inicio, fim): # Greedy Search -> Working
-        l1 = LinkedList()
-        l2 = LinkedList()
-        visitado = []
-        l1.insereUltimo(inicio, 0, 0, None)
-        l2.insereUltimo(inicio, 0, 0, None)
-        linha = []
-        linha.append(inicio)
-        linha.append(0)
-        visitado.append(linha)
+    def greedySearch(self, start, end):  # Greedy Search -> Working
+        frontier = LinkedList()
+        path_nodes = LinkedList()
+        visited = []
+        frontier.insertLast(start, 0, 0, None)
+        path_nodes.insertLast(start, 0, 0, None)
+        entry = []
+        entry.append(start)
+        entry.append(0)
+        visited.append(entry)
         
-        while l1.vazio() == False:
-            actual = l1.deletaPrimeiro()
+        while frontier.empty() == False:
+            current = frontier.deleteFirst()
             
-            if tuple(actual.estado) == tuple(fim):
-                
-                caminho = []
-                caminho = l2.exibeCaminho2(actual.estado, actual.v1)
-                #print("Cópia da árvore:\n",l2.exibeLista())
-                #print("\nÁrvore de busca:\n",l1.exibeLista(),"\n")
-                return caminho, actual.v2
+            if tuple(current.state) == tuple(end):
+                path = path_nodes.displayPath2(current.state, current.v1)
+                return path, current.v2
         
-            filhos = self.successorsGrid(actual.estado)            
-            for novo in filhos:
-                valor = (novo[0], novo[1])
+            successors = self.getSuccessors(current.state)            
+            for successor in successors:
+                position = (successor[0], successor[1])
                 
-                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = actual.v2 + novo[2]  # custo do caminho
-                v1 = self.h(valor, fim) # f2(n)
+                # CALCULATE COST FROM ORIGIN TO CURRENT NODE
+                path_cost = current.v2 + successor[2]  # path cost
+                priority = self.heuristic(position, end)  # f2(n)
                 
-                flag1 = True
-                flag2 = True
-                for j in range(len(visitado)):
-                    if visitado[j][0]==valor:
-                        if visitado[j][1]<=v2:
-                            flag1 = False
+                should_add = True
+                should_update = True
+                for entry in visited:
+                    if entry[0] == position:
+                        if entry[1] <= path_cost:
+                            should_add = False
                         else:
-                            visitado[j][1]=v2
-                            flag2 = False
-                            l1.inserePos_X(valor, v1, v2, actual)
+                            entry[1] = path_cost
+                            should_update = False
+                            frontier.insertPos_X(position, priority, path_cost, current)
                         break
 
-                if flag1:
-                    l1.inserePos_X(valor, v1, v2, actual)
-                    l2.insereUltimo(valor, v1, v2, actual)
-                    if flag2:
-                        visitado.append([valor, v2])
+                if should_add:
+                    frontier.insertPos_X(position, priority, path_cost, current)
+                    path_nodes.insertLast(position, priority, path_cost, current)
+                    if should_update:
+                        visited.append([position, path_cost])
                         
         return [], 0
     
-    def aStarSearch(self, start, end): # A* Search -> Working
-        l1 = LinkedList()
-        l2 = LinkedList()
-        visitado = []
+    def aStarSearch(self, start, end):  # A* Search -> Working
+        frontier = LinkedList()
+        path_nodes = LinkedList()
+        visited = []
         
-        l1.insereUltimo(start, 0, 0, None)
-        l2.insereUltimo(start, 0, 0, None)
+        frontier.insertLast(start, 0, 0, None)
+        path_nodes.insertLast(start, 0, 0, None)
         
-        linha = []
-        linha.append(start)
-        linha.append(0)
+        entry = []
+        entry.append(start)
+        entry.append(0)
         
-        visitado.append(linha)
+        visited.append(entry)
         
-        while l1.vazio() == False:
-            actual = l1.deletaPrimeiro()
+        while frontier.empty() == False:
+            current = frontier.deleteFirst()
             
-            if tuple(actual.estado) == tuple(end):
-                path = []
-                path = l2.exibeCaminho2(actual.estado, actual.v1)
-                return path, actual.v2
+            if tuple(current.state) == tuple(end):
+                path = path_nodes.displayPath2(current.state, current.v1)
+                return path, current.v2
         
-            filhos = self.successorsGrid(actual.estado)
+            successors = self.getSuccessors(current.state)
             
-            for novo in filhos:
-                valor = []
-                valor.append(novo[0])
-                valor.append(novo[1])
+            for successor in successors:
+                position = []
+                position.append(successor[0])
+                position.append(successor[1])
                 
-                # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                v2 = actual.v2 + novo[2]  # custo do caminho
-            
-                v1 = v2 + self.h(valor, end) # f3(n)
+                # CALCULATE COST FROM ORIGIN TO CURRENT NODE
+                path_cost = current.v2 + successor[2]  # path cost
+                priority = path_cost + self.heuristic(position, end)  # f3(n)
 
-                flag1 = True
-                flag2 = True
+                should_add = True
+                should_update = True
                 
-                for j in range(len(visitado)):
-                    if visitado[j][0][0] == valor[0] and visitado[j][0][1] == valor[1]:
-                        if visitado[j][1] <= v2:
-                            flag1 = False
+                for entry in visited:
+                    if entry[0][0] == position[0] and entry[0][1] == position[1]:
+                        if entry[1] <= path_cost:
+                            should_add = False
                         else:
-                            visitado[j][1] = v2
-                            flag2 = False
+                            entry[1] = path_cost
+                            should_update = False
                         break
 
-                if flag1:
-                    l1.inserePos_X(valor, v1, v2, actual)
-                    l2.insereUltimo(valor, v1, v2, actual)
+                if should_add:
+                    frontier.insertPos_X(position, priority, path_cost, current)
+                    path_nodes.insertLast(position, priority, path_cost, current)
                     
-                    if flag2:
-                        linha = []
-                        linha.append(valor)
-                        linha.append(v2)
-                        visitado.append(linha)
+                    if should_update:
+                        new_entry = []
+                        new_entry.append(position)
+                        new_entry.append(path_cost)
+                        visited.append(new_entry)
                         
         return [], 0
 
-    def aaiStarSearch(self, start, end, limit):  # AIA* Search -> Working
+    def idaStarSearch(self, start, end, limit):  # IDA* Search -> Working
         while True:
-            lim_exc = []
-            l1 = LinkedList()
-            l2 = LinkedList()
-            visitado = []
-            l1.insereUltimo(start, 0, 0, None)
-            l2.insereUltimo(start, 0, 0, None)
-            linha = []
-            linha.append(start)
-            linha.append(0)
-            visitado.append(linha)
+            exceeded_limits = []
+            frontier = LinkedList()
+            path_nodes = LinkedList()
+            visited = []
+            frontier.insertLast(start, 0, 0, None)
+            path_nodes.insertLast(start, 0, 0, None)
+            entry = []
+            entry.append(start)
+            entry.append(0)
+            visited.append(entry)
             
-            while l1.vazio() == False:
-                actual = l1.deletaPrimeiro()
+            while frontier.empty() == False:
+                current = frontier.deleteFirst()
                 
-                if tuple(actual.estado) == tuple(end):
-                    path = []
-                    path = l2.exibeCaminho2(actual.estado, actual.v1)
-                    return path, actual.v2
+                if tuple(current.state) == tuple(end):
+                    path = path_nodes.displayPath2(current.state, current.v1)
+                    return path, current.v2
             
-                filhos = self.successorsGrid(actual.estado)
+                successors = self.getSuccessors(current.state)
                 
-                for novo in filhos:
-                    valor = []
-                    valor.append(novo[0])
-                    valor.append(novo[1])
+                for successor in successors:
+                    position = []
+                    position.append(successor[0])
+                    position.append(successor[1])
                     
-                    # CÁLCULO DO CUSTO DA ORIGEM ATÉ O NÓ ATUAL
-                    v2 = actual.v2 + novo[2]  # custo do caminho
-                    v1 = v2 + self.h(valor, end) # f3(n)
-                    if v1 <= limit:
-                        flag1 = True
-                        flag2 = True
-                        for j in range(len(visitado)):
-                            if visitado[j][0] == valor:
-                                if visitado[j][1] <= v2:
-                                    flag1 = False
+                    # CALCULATE COST FROM ORIGIN TO CURRENT NODE
+                    path_cost = current.v2 + successor[2]  # path cost
+                    priority = path_cost + self.heuristic(position, end)  # f3(n)
+                    if priority <= limit:
+                        should_add = True
+                        should_update = True
+                        for entry in visited:
+                            if entry[0] == position:
+                                if entry[1] <= path_cost:
+                                    should_add = False
                                 else:
-                                    visitado[j][1] = v2
-                                    flag2 = False
+                                    entry[1] = path_cost
+                                    should_update = False
                                 break
         
-                        if flag1:
-                            l1.inserePos_X(valor, v1, v2, actual)
-                            l2.insereUltimo(valor, v1, v2, actual)
-                            if flag2:
-                                linha = []
-                                linha.append(valor)
-                                linha.append(v2)
-                                visitado.append(linha)
+                        if should_add:
+                            frontier.insertPos_X(position, priority, path_cost, current)
+                            path_nodes.insertLast(position, priority, path_cost, current)
+                            if should_update:
+                                new_entry = []
+                                new_entry.append(position)
+                                new_entry.append(path_cost)
+                                visited.append(new_entry)
                     else:
-                        lim_exc.append(v1)
+                        exceeded_limits.append(priority)
                         
-            if not lim_exc:  # Evitando a divisão por zero!
+            if not exceeded_limits:  # Avoid division by zero!
                 return [], 9999
             else:
-                limit = sum(lim_exc) / len(lim_exc)
+                limit = sum(exceeded_limits) / len(exceeded_limits)

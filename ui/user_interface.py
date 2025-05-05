@@ -2,8 +2,8 @@ import pygame
 import sys
 import pygame_gui
 from core.grid_generator import RandomProblemGenerator
-from core.unweight_search import UnweightSearch
-from core.weight_search import WeightSearch
+from core.unweight_search import UnweightedSearch
+from core.weight_search import WeightedSearch
 from core.system_messages import SystemMessages
 
 class UserInterface:
@@ -189,22 +189,22 @@ class UserInterface:
 
     def find_path(self):
         """
-            Seleciona o algoritmo de busca baseado na escolha do usuário
+        Selects the search algorithm based on user's choice
         """
-        unweighted_search = UnweightSearch(self.grid, self.nx, self.ny)
-        weighted_search = WeightSearch(self.grid, self.nx, self.ny)
+        unweighted_search = UnweightedSearch(self.grid, self.nx, self.ny)
+        weighted_search = WeightedSearch(self.grid, self.nx, self.ny)
         self.cost = 0
         
         algorithm_actions = {
             "Amplitude": lambda: unweighted_search.breadthFirstSearch(self.start_pos, self.end_pos),
-            "Profundidade": lambda: unweighted_search.depthSearch(self.start_pos, self.end_pos),
+            "Profundidade": lambda: unweighted_search.depthFirstSearch(self.start_pos, self.end_pos),
             "Profundidade Lim.": lambda: unweighted_search.depthLimitedSearch(self.start_pos, self.end_pos, 99),
             "Aprof. Interativo": lambda: unweighted_search.iterativeDeepeningSearch(self.start_pos, self.end_pos),
-            "Bidirecional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
+            "Bidirectional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
             "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
             "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
             "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),
-            "AAI*": lambda: weighted_search.aaiStarSearch(self.start_pos, self.end_pos, 99)
+            "AAI*": lambda: weighted_search.idaStarSearch(self.start_pos, self.end_pos, 99)
         }
 
         result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
