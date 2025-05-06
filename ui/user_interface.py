@@ -209,8 +209,11 @@ class UserInterface:
 
         result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
         
+        message = SystemMessages(self.screen.get_size(), self.manager)
+        
         if result is not None:
             if isinstance(result, tuple):
+                message.notPathMessage()
                 self.path, self.cost = result
             else:
                 self.path = result
