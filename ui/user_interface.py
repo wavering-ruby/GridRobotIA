@@ -225,7 +225,6 @@ class UserInterface:
         if not self.animation_started or not self.path or self.current_segment >= len(self.path) - 1:
             return False  # Animação não iniciada ou concluída
         
-        
         current_time = pygame.time.get_ticks()
         elapsed = (current_time - self.last_move_time) / 1000  # Segundos
         
