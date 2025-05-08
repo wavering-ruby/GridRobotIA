@@ -120,7 +120,7 @@ class UserInterface:
         # Peso permitido
         self.label_y = pygame_gui.elements.UILabel(
             relative_rect = pygame.Rect((base_x, base_y + 250), (160, 20)),
-            text = "Limite permitido:",
+            text = "Limite/Peso permitido:",
             manager = self.manager
         )
         
@@ -217,7 +217,7 @@ class UserInterface:
             "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
             "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
             "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),
-            "AAI*": lambda: weighted_search.idaStarSearch(self.start_pos, self.end_pos, self.limit)
+            "AAI*": lambda: weighted_search.aaiStarSearch(self.start_pos, self.end_pos, self.cost)
         }
 
         result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
@@ -370,8 +370,14 @@ class UserInterface:
                         ending_pos = self.input_text2.get_text()
                         
                         if(self.input_limit.get_text() == ""):
+                            if(self.sel_selection == 'Com Peso'):
+                                self.cost = 0
+                                
                             self.limit = 0
                         else:
+                            if(self.sel_selection == "Com Peso"):
+                                self.cost = int(self.input_limit.get_text())
+                                
                             self.limit = int(self.input_limit.get_text())
                         
                         if(self.input_text.get_text() == ""):

@@ -224,7 +224,7 @@ class WeightedSearch:
                         
         return [], 0
 
-    def idaStarSearch(self, start, end, limit):  # IDA* Search -> Working
+    def aaiStarSearch(self, start, end, limit):  # aai* Search -> Working
         while True:
             exceeded_limits = []
             frontier = LinkedList()
@@ -277,7 +277,7 @@ class WeightedSearch:
                     else:
                         exceeded_limits.append(priority)
                         
-            if not exceeded_limits:  # Avoid division by zero!
+            if not exceeded_limits:
                 return [], 9999
             else:
                 limit = sum(exceeded_limits) / len(exceeded_limits)
