@@ -226,10 +226,12 @@ class UserInterface:
         
         if result is not None:
             if isinstance(result, tuple):
-                message.notPathMessage()
                 self.path, self.cost = result
             else:
                 self.path = result
+        else:
+            self.path = [] # Colocando para ele zerar o código, pois evita dele se movimentar (com base no path anterior)
+            message.notPathMessage()
     
     def update_animation(self):
         """
