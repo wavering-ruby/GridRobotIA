@@ -251,8 +251,8 @@ class WeightedSearch:
                     position.append(successor[0])
                     position.append(successor[1])
                     
-                    # CALCULATE COST FROM ORIGIN TO CURRENT NODE
-                    path_cost = current.v2 + successor[2]  # path cost
+                    # CÁLCULA O CUSTO DO CAMINHO ATÉ O NÓ ATUAL
+                    path_cost = current.v2 + successor[2]  # custo do caminho
                     priority = path_cost + self.heuristic(position, end)  # f3(n)
                     if priority <= limit:
                         should_add = True
@@ -279,5 +279,5 @@ class WeightedSearch:
                         
             if not exceeded_limits:
                 return [], 9999
-            else:
+            else: # Neste caso, ele não encontrou o caminho, mas  tenta de novo com um limite maior
                 limit = sum(exceeded_limits) / len(exceeded_limits)
