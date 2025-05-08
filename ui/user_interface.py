@@ -113,13 +113,26 @@ class UserInterface:
 
         # Campo Final
         self.input_text2 = pygame_gui.elements.UITextEntryLine(
-            relative_rect=pygame.Rect((base_x, base_y + 210), (160, 30)),
-            manager=self.manager
+            relative_rect = pygame.Rect((base_x, base_y + 210), (160, 30)),
+            manager = self.manager
+        )
+        
+        # Peso permitido
+        self.label_y = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect((base_x, base_y + 250), (160, 20)),
+            text = "Limite permitido:",
+            manager = self.manager
+        )
+        
+        # Campo Final
+        self.input_limit = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect((base_x, base_y + 270), (160, 30)),
+            manager = self.manager
         )
 
         # Botão de Início
         self.botao_ler_texto = pygame_gui.elements.UIButton(
-            relative_rect = pygame.Rect((base_x, base_y + 250), (160, 30)),
+            relative_rect = pygame.Rect((base_x, base_y + 320), (160, 30)),
             text = 'Iniciar',
             manager = self.manager
         )
@@ -198,13 +211,13 @@ class UserInterface:
         algorithm_actions = {
             "Amplitude": lambda: unweighted_search.breadthFirstSearch(self.start_pos, self.end_pos),
             "Profundidade": lambda: unweighted_search.depthFirstSearch(self.start_pos, self.end_pos),
-            "Profundidade Lim.": lambda: unweighted_search.depthLimitedSearch(self.start_pos, self.end_pos, 99),
+            "Profundidade Lim.": lambda: unweighted_search.depthLimitedSearch(self.start_pos, self.end_pos, self.limit),
             "Aprof. Interativo": lambda: unweighted_search.iterativeDeepeningSearch(self.start_pos, self.end_pos),
             "Bidirectional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
             "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
             "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
             "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),
-            "AAI*": lambda: weighted_search.idaStarSearch(self.start_pos, self.end_pos, 99)
+            "AAI*": lambda: weighted_search.idaStarSearch(self.start_pos, self.end_pos, self.limit)
         }
 
         result = algorithm_actions.get(self.sel_algorithm, lambda: None)()
@@ -353,6 +366,11 @@ class UserInterface:
                         starting_pos = self.input_text.get_text()
                         
                         ending_pos = self.input_text2.get_text()
+                        
+                        if(self.input_limit.get_text() == ""):
+                            self.limit = 0
+                        else:
+                            self.limit = int(self.input_limit.get_text())
                         
                         if(self.input_text.get_text() == ""):
                             self.sx = 0
