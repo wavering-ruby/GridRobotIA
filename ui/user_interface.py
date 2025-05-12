@@ -264,7 +264,7 @@ class UserInterface:
         if self.current_segment >= len(self.path) - 1:
             self.character_pos = list(self.end_pos)
             
-            if(self.sel_selection == 'Com Peso'):
+            if(self.animation_type == "Com Peso"):
                 message.weightedSucessMessage(self.sel_algorithm, self.cost)
 
             return False  # Animação concluída
@@ -461,8 +461,9 @@ class UserInterface:
                         self.character_pos = list(self.start_pos)
                         self.current_segment = 0
                         self.last_move_time = pygame.time.get_ticks()
-                        self.animation_started = True  # Habilita a animação
-                
+                        self.animation_type = self.sel_selection # Para ele não ficar mudando o tipo de animação com base no código
+                        self.animation_started = True
+                        
             # Atualiza elementos da interface
             self.manager.update(time_delta)
             
