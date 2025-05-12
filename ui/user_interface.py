@@ -334,7 +334,7 @@ class UserInterface:
     
         self.dropdown_mode_selection.kill()
         self.dropdown_mode_selection = pygame_gui.elements.UIDropDownMenu(
-            options_list = ['Sem Peso', 'Com Peso'],
+            options_list = ['Sem Peso', 'Com Peso'], 
             starting_option = self.sel_selection,
             relative_rect = pygame.Rect((base_x, base_y + 20), (160, 30)),
             manager = self.manager
@@ -350,9 +350,7 @@ class UserInterface:
     
         # Recria os outros elementos do menu
         self.label_mode_selection.set_relative_position((base_x, base_y))
-        self.dropdown_mode_selection.set_relative_position((base_x, base_y + 20))
         self.label_dropdown.set_relative_position((base_x, base_y + 60))
-        self.dropdown.set_relative_position((base_x, base_y + 80))
         self.label_x.set_relative_position((base_x, base_y + 130))
         self.input_text.set_relative_position((base_x, base_y + 150))
         self.label_y.set_relative_position((base_x, base_y + 190))
