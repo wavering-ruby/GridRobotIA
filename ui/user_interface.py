@@ -41,7 +41,7 @@ class UserInterface:
         #Configurações da tela
         self.menu_width = 200
         self.grid_size_pixels = 600
-        self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
 
         pygame.display.set_caption("Animação de Algoritmos de Busca")
         self.clock = pygame.time.Clock()
