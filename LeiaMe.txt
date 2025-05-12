@@ -12,6 +12,7 @@ Para executar o programa, é necessário depurar o arquivo "main.py", que puxar 
 Em seguida, deve-se informar:
 • A posição inicial do robô (coordenadas X, Y).
 • A posição final (coordenadas X, Y).
+• O limite e o peso se aplicável
 Após definir esses parâmetros, basta clicar em "Iniciar" para que a animação do robô seja executada.
 Caso deseje gerar uma Grid nova aleatório, deve-se clicar no botão “Reset Grid”, isso resetará também a animação.
 No caso do algoritmo “profundidade limitada”, ele está configurado como limite sendo igual a 99, caso seja necessário modificar deve-se trocar na função “find_path”, na chamada “self.find_path_profundidade_limitada(limite=X)”, onde X representa o valor do limite desejado. Se o caminho da resolução for maior que o limite o robô não andará.
@@ -22,7 +23,7 @@ Para a modificação de metódos de busca ("Sem Peso" e "Com Peso"), deve-se cli
 1. Depurar o arquivo "main.py" (por terminal ou por compilador, conforme desejar).
 1.1. Se for por terminal escrever: python interface.py
 2. Clique no botão "Reset Grid" caso deseje sortear outro campo.
-3.  Clique no método de busca desejado: "Sem Peso" ou "Com Peso".
+3. Clique no método de busca desejado: "Sem Peso" ou "Com Peso", para o caso da avaliação dois é "Com Peso".
 4. Na caixa de seleção de algoritmo clique no nome do algoritmo que deseja visualizar.
 5. No campo "Posição Inicial" digite as coordenadas do ponto que deseja ser o ponto inicial do robô, conforme template: (X,Y).
 6. No campo "Posição Final" digite as coordenadas do ponto que deseja ser o ponto final do robô, conforme template: (X,Y).
