@@ -276,7 +276,7 @@ class UserInterface:
             Desenha toda a cena
         """
         width, height = self.screen.get_size()
-        cell_size = min(width // self.ny, height // self.nx)
+        cell_size = min(self.grid_size_pixels // self.nx, self.grid_size_pixels // self.ny)
         
         # Desenha a grid
         for x in range(self.nx):
@@ -324,6 +324,29 @@ class UserInterface:
 
         # Botões
         self.draw_button("Reset Grid", (menu_x + 20, 80, 160, 40), button_font)
+    
+    def update_menu_positions(self):
+        base_x = self.grid_size_pixels + 20
+        base_y = self.base_y  # manter a altura base
+
+        self.label_dropdown.set_relative_position((base_x, base_y))
+        self.dropdown.set_relative_position((base_x, base_y))
+
+        self.label_x.set_relative_position((base_x, base_y + 50))
+        self.input_text.set_relative_position((base_x, base_y + 70))
+
+        self.label_y.set_relative_position((base_x, base_y + 120))
+        self.input_text2.set_relative_position((base_x, base_y + 140))
+
+        self.botao_ler_texto.set_relative_position((base_x, base_y + 180))
+
+        self.label_switch_button.set_relative_position((base_x, base_y + 210))
+        self.switch_button.set_relative_position((base_x, base_y + 230))
+
+        param_y = base_y + 260
+        for checkbox, _ in self.checkboxes:
+            checkbox.set_relative_position((base_x, param_y))
+            param_y += 35
     
     def run(self):
         """
