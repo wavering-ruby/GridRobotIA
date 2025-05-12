@@ -63,7 +63,7 @@ class UserInterface:
 
         # Legenda do Switch Button (Método de Busca)
         self.label_mode_selection = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y), (160, 20)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y), (160, 20)),
             text = "Método de Busca:",
             manager = self.manager
         )
@@ -72,13 +72,13 @@ class UserInterface:
         self.dropdown_mode_selection = pygame_gui.elements.UIDropDownMenu(
             options_list = ['Sem Peso', 'Com Peso'],
             starting_option = self.sel_selection,
-            relative_rect = pygame.Rect((base_x, base_y + 20), (160, 30)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 20), (160, 30)),
             manager = self.manager
         )
 
         # Legenda do Dropdown (Algoritmo)
         self.label_dropdown = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 60), (160, 20)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 60), (160, 20)),
             text = "Algoritmo:",
             manager = self.manager
         )
@@ -87,52 +87,52 @@ class UserInterface:
         self.dropdown = pygame_gui.elements.UIDropDownMenu(
             options_list = self.algorithm_option,
             starting_option = self.sel_algorithm,
-            relative_rect = pygame.Rect((base_x, base_y + 80), (160, 40)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 80), (160, 40)),
             manager = self.manager
         )
 
         # Legenda da Posição Inicial
         self.label_x = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 130), (160, 20)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 130), (160, 20)),
             text = "Posição Inicial (X, Y)",
             manager = self.manager
         )
 
         # Campo Inicial
         self.input_text = pygame_gui.elements.UITextEntryLine(
-            relative_rect = pygame.Rect((base_x, base_y + 150), (160, 30)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 150), (160, 30)),
             manager = self.manager
         )
 
         # Legenda da Posição Final
         self.label_y = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 190), (160, 20)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 190), (160, 20)),
             text = "Posição Final (X, Y):",
             manager = self.manager
         )
 
         # Campo Final
         self.input_text2 = pygame_gui.elements.UITextEntryLine(
-            relative_rect = pygame.Rect((base_x, base_y + 210), (160, 30)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 210), (160, 30)),
             manager = self.manager
         )
         
         # Peso permitido
         self.label_y = pygame_gui.elements.UILabel(
-            relative_rect = pygame.Rect((base_x, base_y + 250), (160, 20)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 250), (160, 20)),
             text = "Limite/Peso permitido:",
             manager = self.manager
         )
         
         # Campo Final
         self.input_limit = pygame_gui.elements.UITextEntryLine(
-            relative_rect = pygame.Rect((base_x, base_y + 270), (160, 30)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 270), (160, 30)),
             manager = self.manager
         )
 
         # Botão de Início
         self.botao_ler_texto = pygame_gui.elements.UIButton(
-            relative_rect = pygame.Rect((base_x, base_y + 320), (160, 30)),
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 320), (160, 30)),
             text = 'Iniciar',
             manager = self.manager
         )
