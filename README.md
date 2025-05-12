@@ -41,6 +41,7 @@ To run the program, you need to install some libraries before debugging the file
 - Pygame (`pip install pygame`)
 - Pygame_gui (`pip install pygame_gui`)
 - Numpy (`pip install numpy`)
+- Random (`pip install random`)
 
 ### 4.2. File Initialization
 To execute the program, you need to debug the file **"Interface.py"**, which contains the programming for the sidebar menu. Upon opening it, you will see options to select the desired algorithm (Breadth-First Search, Depth-First Search, Limited Depth Search, Iterative Deepening, or Bidirectional Search).
@@ -65,4 +66,5 @@ If the solution path exceeds the limit, the robot will not move.
 3. In the algorithm selection box, click the name of the algorithm you want to visualize.
 4. In the **"Initial Position"** field, enter the coordinates of the point where the robot should start, using the format: `(X, Y)`.
 5. In the **"Final Position"** field, enter the coordinates of the point where the robot should end, using the format: `(X, Y)`.
-6. Click the **"Start"** button to execute the robot's animation path.
+6. For limited algorithm, you can also input the limit cost to run the script.
+7. Click the **"Start"** button to execute the robot's animation path.
