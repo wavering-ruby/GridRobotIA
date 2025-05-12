@@ -118,7 +118,7 @@ class UserInterface:
         )
         
         # Peso permitido
-        self.label_y = pygame_gui.elements.UILabel(
+        self.label_limit = pygame_gui.elements.UILabel(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 250), (160, 20)),
             text = "Limite/Peso permitido:",
             manager = self.manager
@@ -136,7 +136,7 @@ class UserInterface:
             text = 'Iniciar',
             manager = self.manager
         )
-        
+    
     def draw_button(self, text, rect, font):
         pygame.draw.rect(self.screen, (70, 70, 70), rect, border_radius = 8)
         pygame.draw.rect(self.screen, (200, 200, 200), rect, 2, border_radius = 8)
@@ -329,24 +329,28 @@ class UserInterface:
         base_x = self.grid_size_pixels + 20
         base_y = self.base_y  # manter a altura base
 
-        self.label_dropdown.set_relative_position((base_x, base_y))
-        self.dropdown.set_relative_position((base_x, base_y))
+        self.label_mode_selection.set_relative_position((base_x, base_y))
+        self.dropdown_mode_selection.set_relative_position((base_x, base_y + 20))
 
-        self.label_x.set_relative_position((base_x, base_y + 50))
-        self.input_text.set_relative_position((base_x, base_y + 70))
+        self.label_dropdown.set_relative_position((base_x, base_y + 60))
+        self.dropdown.set_relative_position((base_x, base_y + 80))
 
-        self.label_y.set_relative_position((base_x, base_y + 120))
-        self.input_text2.set_relative_position((base_x, base_y + 140))
+        self.label_x.set_relative_position((base_x, base_y + 130))
+        self.input_text.set_relative_position((base_x, base_y + 150))
 
-        self.botao_ler_texto.set_relative_position((base_x, base_y + 180))
+        self.label_y.set_relative_position((base_x, base_y + 190))
+        self.input_text2.set_relative_position((base_x, base_y + 210))
 
-        self.label_switch_button.set_relative_position((base_x, base_y + 210))
-        self.switch_button.set_relative_position((base_x, base_y + 230))
+        self.label_limit.set_relative_position((base_x, base_y + 250))
+        self.input_limit.set_relative_position((base_x, base_y + 270))
 
-        param_y = base_y + 260
-        for checkbox, _ in self.checkboxes:
-            checkbox.set_relative_position((base_x, param_y))
-            param_y += 35
+        self.botao_ler_texto.set_relative_position((base_x, base_y + 320))
+
+
+        # param_y = base_y + 260
+        # for checkbox, _ in self.checkboxes:
+        #     checkbox.set_relative_position((base_x, param_y))
+        #     param_y += 35
     
     def run(self):
         """
@@ -370,7 +374,20 @@ class UserInterface:
                     if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
                         if 80 <= my <= 120:
                             self.reset_grid()
-                    
+                
+                elif event.type == pygame.VIDEORESIZE:
+                    width, height = event.size
+                    self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+
+                    # Redimensiona a grid para preencher a altura
+                    self.grid_size_pixels = min(width - self.menu_width, height)
+
+                    # Atualiza o layout do menu para a nova resolução
+                    self.manager.set_window_resolution((width, height))
+
+                    # Atualiza posições do menu
+                    self.update_menu_positions()
+                
                 self.manager.process_events(event)
                 
                 # Verificando seleção no dropdown
