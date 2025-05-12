@@ -8,7 +8,7 @@ Para a execução do programa é necessário ter algumas bibliotecas antes de de
 - Numpy (pip install numpy)
 
 ### Inicialização do arquivo: ###
-Para executar o programa, é necessário depurar o arquivo "Interface.py", que contém a programação do menu lateral. Ao abri-lo, serão exibidas as opções para selecionar o algoritmo desejado (Amplitude, Profundidade, Profundidade limitada, Aprofundamento iterativo ou Bidirecional).
+Para executar o programa, é necessário depurar o arquivo "main.py", que puxar as funções da interface. Ao abri-lo, serão exibidas as opções para selecionar o algoritmo desejado (Amplitude, Profundidade, Profundidade limitada, Aprofundamento iterativo ou Bidirecional).
 Em seguida, deve-se informar:
 • A posição inicial do robô (coordenadas X, Y).
 • A posição final (coordenadas X, Y).
@@ -19,7 +19,7 @@ Observação: Caso coloque que a "posição inicial"/"posição final" é igual 
 Para a modificação de metódos de busca ("Sem Peso" e "Com Peso"), deve-se clicar no botão referente a estes métodos, se for decidido utilizar o método de busca Com Peso, deverá escolher qual algoritmo será utilizado entre: "Custo Uniforme", "Guloso", "A*", "AAI*". 
 
 ### Passo a passo: ###
-1. Depurar o arquivo "Interface.py" (por terminal ou por compilador, conforme desejar).
+1. Depurar o arquivo "main.py" (por terminal ou por compilador, conforme desejar).
 1.1. Se for por terminal escrever: python interface.py
 2. Clique no botão "Reset Grid" caso deseje sortear outro campo.
 3.  Clique no método de busca desejado: "Sem Peso" ou "Com Peso".
