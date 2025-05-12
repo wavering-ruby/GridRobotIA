@@ -345,12 +345,6 @@ class UserInterface:
         self.input_limit.set_relative_position((base_x, base_y + 270))
 
         self.botao_ler_texto.set_relative_position((base_x, base_y + 320))
-
-
-        # param_y = base_y + 260
-        # for checkbox, _ in self.checkboxes:
-        #     checkbox.set_relative_position((base_x, param_y))
-        #     param_y += 35
     
     def run(self):
         """
