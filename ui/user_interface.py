@@ -326,26 +326,26 @@ class UserInterface:
         self.draw_button("Reset Grid", (menu_x + 20, 80, 160, 40), button_font)
     
     def recreate_menu_elements(self):
-        """Recria todos os elementos do menu ao redimensionar a janela."""
+        """
+            Recria todos os elementos do menu ao redimensionar a janela.
+        """
         base_x = self.grid_size_pixels + 20
         base_y = 200
     
-        # Recria o primeiro dropdown (algoritmo)
-        self.dropdown.kill()
-        self.dropdown = pygame_gui.elements.UIDropDownMenu(
-            options_list=['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
-            starting_option=self.sel_algorithm,
-            relative_rect=pygame.Rect((base_x, base_y), (160, 40)),
-            manager=self.manager
-        )
-    
-        # Recria o segundo dropdown (seleção)
         self.dropdown_mode_selection.kill()
         self.dropdown_mode_selection = pygame_gui.elements.UIDropDownMenu(
-            options_list=['Sem Peso', 'Com Peso'],
-            starting_option=self.sel_selection,
-            relative_rect=pygame.Rect((base_x, base_y + 230), (160, 30)),
-            manager=self.manager
+            options_list = ['Sem Peso', 'Com Peso'],
+            starting_option = self.sel_selection,
+            relative_rect = pygame.Rect((base_x, base_y + 20), (160, 30)),
+            manager = self.manager
+        )
+        
+        self.dropdown.kill()
+        self.dropdown = pygame_gui.elements.UIDropDownMenu(
+            options_list = ['Amplitude', 'Profundidade', 'Profundidade Lim.', 'Aprof. Interativo', 'Bidirecional'],
+            starting_option = self.sel_algorithm,
+            relative_rect = pygame.Rect((base_x, base_y + 80), (160, 40)),
+            manager = self.manager
         )
     
         # Recria os outros elementos do menu
@@ -360,12 +360,6 @@ class UserInterface:
         self.label_limit.set_relative_position((base_x, base_y + 250))
         self.input_limit.set_relative_position((base_x, base_y + 270))
         self.botao_ler_texto.set_relative_position((base_x, base_y + 320))
-    
-        # Atualiza posições dos checkboxes
-        param_y = base_y + 260
-        for checkbox, _ in self.checkboxes:
-            checkbox.set_relative_position((base_x, param_y))
-            param_y += 35
     
     def run(self):
         """
@@ -400,8 +394,11 @@ class UserInterface:
                     # Atualiza o layout do menu para a nova resolução
                     self.manager.set_window_resolution((width, height))
 
-                    # Atualiza posições do menu
-                    self.update_menu_positions()
+                    # Recria todos os elementos do menu
+                    self.recreate_menu_elements()
+
+                    # Força a atualização do layout do pygame_gui
+                    self.manager.update(0)
                 
                 self.manager.process_events(event)
                 
