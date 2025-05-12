@@ -62,9 +62,13 @@ class UnweightedSearch:
         
         while not stack.empty():
             current = stack.deleteLast()
+            
+            
             if current.state == list(end_pos):
                 path = []
                 node = current
+                
+                
                 while node is not None:
                     path.insert(0, node.state)
                     node = node.parent
@@ -81,6 +85,7 @@ class UnweightedSearch:
         If visited with a higher level, updates to the lower one.
         """
         flag = True
+        
         for aux in visited:
             if aux[0] == new:
                 if aux[1] <= (level + 1):
@@ -123,9 +128,12 @@ class UnweightedSearch:
         limit = 0
         while True:
             path = self.depthLimitedSearch(start_pos, end_pos, limit)
+            
             if path:
                 return path
+            
             limit += 1
+            
             if limit > self.nx * self.ny:  # Maximum limit (grid size)
                 return []
 
@@ -151,26 +159,34 @@ class UnweightedSearch:
             while not l1.empty():
                 if ni != l1.first().v1:
                     break
+                
                 current = l1.deleteFirst()
                 children = self.gridSuccessors(current.state)
+                
                 for new in children:
                     if self.checkVisited(new, current.v1 + 1, visited1):
                         l1.insertLast(new, current.v1 + 1, 0, current)
                         l2.insertLast(new, current.v1 + 1, 0, current)
                         visited1.append([new, current.v1 + 1])
+                        
                         if not self.checkVisited(new, current.v1 + 1, visited2):
                             path = [] + l2.displayPath() + l4.displayPath1(new)
                             return path
+                        
             while not l3.empty():
                 if ni != l3.first().v1:
                     break
+                
                 current = l3.deleteFirst()
                 children = self.gridSuccessors(current.state)
+                
                 for new in children:
+                    
                     if self.checkVisited(new, current.v1 + 1, visited2):
                         l3.insertLast(new, current.v1 + 1, 0, current)
                         l4.insertLast(new, current.v1 + 1, 0, current)
                         visited2.append([new, current.v1 + 1])
+                        
                         if not self.checkVisited(new, current.v1 + 1, visited1):
                             path = [] + l4.displayPath() + l2.displayPath1(new)
                             return path[::-1]

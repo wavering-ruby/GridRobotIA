@@ -213,7 +213,7 @@ class UserInterface:
             "Profundidade": lambda: unweighted_search.depthFirstSearch(self.start_pos, self.end_pos),
             "Profundidade Lim.": lambda: unweighted_search.depthLimitedSearch(self.start_pos, self.end_pos, self.limit),
             "Aprof. Interativo": lambda: unweighted_search.iterativeDeepeningSearch(self.start_pos, self.end_pos),
-            "Bidirectional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
+            "Bidirecional": lambda: unweighted_search.bidirectionalSearch(self.start_pos, self.end_pos),
             "Custo Uniforme": lambda: weighted_search.uniformCostSearch(self.start_pos, self.end_pos),
             "Guloso": lambda: weighted_search.greedySearch(self.start_pos, self.end_pos),
             "A*": lambda: weighted_search.aStarSearch(self.start_pos, self.end_pos),

@@ -102,7 +102,7 @@ class UnweightedSearch:
                     
                     target_pos = [end_pos[0], end_pos[1]]
                     
-                    if new == target_pos:
+                    if tuple(new) == tuple(target_pos):
                         path = []
                         path += path_copy.displayPath()
                         self.path = path
@@ -145,7 +145,7 @@ class UnweightedSearch:
                         
                         target_pos = [end_pos[0], end_pos[1]]
                         
-                        if new == target_pos:
+                        if tuple(new) == tuple(target_pos):
                             path = []
                             path += path_copy.displayPath()
                             self.path = path
@@ -154,27 +154,27 @@ class UnweightedSearch:
         return None
 
     def iterativeDeepeningSearch(self, start_pos, end_pos):
-        self.path = []
-        
         depth_limit = 0
         
         while True:
-            self.depthLimitedSearch(start_pos, end_pos, depth_limit)
-            if self.path:
-                return
+            path = self.depthLimitedSearch(start_pos, end_pos, depth_limit)
+            
+            if path:
+                return path
+            
             depth_limit += 1
+            
             if depth_limit > self.nx * self.ny:
-                self.path = []
-                return
-
+                return []
+            
     def bidirectionalSearch(self, start_pos, end_pos):
-        self.path = []
+        path = []
         
-        queue1 = LinkedList()
-        path_copy1 = LinkedList()
+        queue1 = LinkedList()  # Busca do início
+        path_copy1 = LinkedList()  # Cópia do caminho (início)
         
-        queue2 = LinkedList()
-        path_copy2 = LinkedList()
+        queue2 = LinkedList()  # Busca do fim
+        path_copy2 = LinkedList()  # Cópia do caminho (fim)
     
         queue1.insertLast(start_pos, 0, 0, None)
         path_copy1.insertLast(start_pos, 0, 0, None)
@@ -195,6 +195,7 @@ class UnweightedSearch:
         visited2.append(line)
         
         current_depth = 0
+        
         while queue1.empty() == False or queue2.empty() == False:
             
             while queue1.empty() == False:
@@ -203,9 +204,8 @@ class UnweightedSearch:
                     break
                     
                 current = queue1.deleteFirst()
-        
                 children = self.gridSuccessors(current.state)
-        
+                
                 for new in children:
                     is_visited = self.checkVisited(new, current.v1 + 1, visited1)
                     
@@ -218,23 +218,22 @@ class UnweightedSearch:
                         line.append(current.v1 + 1)
                         visited1.append(line)
         
-                        is_visited = not(self.checkVisited(new, current.v1 + 1, visited2))
+                        is_visited_other = not(self.checkVisited(new, current.v1 + 1, visited2))
                         
-                        if is_visited:    
+                        if is_visited_other:    
                             path = []
                             path += path_copy1.displayPath()
                             path += path_copy2.displayPath1(new)
-                            self.path = path
-                            return self.path
+                            return path
                         
             while queue2.empty() == False:
+                
                 if current_depth != queue2.first().v1:
                     break
                 
                 current = queue2.deleteFirst()
-        
                 children = self.gridSuccessors(current.state)
-        
+                
                 for new in children:
                     is_visited = self.checkVisited(new, current.v1 + 1, visited2)
                     
@@ -247,15 +246,14 @@ class UnweightedSearch:
                         line.append(current.v1 + 1)
                         visited2.append(line)
         
-                        is_visited = not(self.checkVisited(new, current.v1 + 1, visited1))
+                        is_visited_other = not(self.checkVisited(new, current.v1 + 1, visited1))
                         
-                        if is_visited:
+                        if is_visited_other:
                             path = []
                             path += path_copy2.displayPath()
                             path += path_copy1.displayPath1(new)
-                            self.path = path[::-1]
-                            return self.path
+                            return path[::-1]
                             
             current_depth += 1
-        
-        return self.path
+
+        return path
