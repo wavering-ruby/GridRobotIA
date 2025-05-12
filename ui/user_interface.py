@@ -313,6 +313,7 @@ class UserInterface:
         # Desenha o menu lateral
         menu_x = self.grid_size_pixels
         screen_width, screen_height = self.screen.get_size()
+        pygame.draw.rect(self.screen, (30, 30, 30), (menu_x, 0, screen_width - menu_x, screen_height))
 
         # Títulos e botões
         font = pygame.font.SysFont(None, 28)
