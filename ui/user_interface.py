@@ -57,8 +57,8 @@ class UserInterface:
         # Inicializa o manager ANTES de criar o dropdown
         self.manager = pygame_gui.UIManager((self.grid_size_pixels + self.menu_width, self.grid_size_pixels))
         
-        base_x = self.grid_size_pixels + 20
-        base_y = 200
+        self.base_x = self.grid_size_pixels + 20
+        self.base_y = 200
         # espaco = 40
 
         # Legenda do Switch Button (Método de Busca)
