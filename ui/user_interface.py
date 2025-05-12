@@ -275,7 +275,7 @@ class UserInterface:
         """
             Desenha toda a cena
         """
-        width, height = self.screen.get_size()
+        
         cell_size = min(self.grid_size_pixels // self.nx, self.grid_size_pixels // self.ny)
         
         # Desenha a grid
