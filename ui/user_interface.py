@@ -8,6 +8,10 @@ from core.system_messages import SystemMessages
 
 class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
+        # Colocando um mensagem inicial do projeto
+        initial_message = SystemMessages(self.screen.get_size(), self.manager)
+        initial_message.start_message()
+
         # Configurações da grid
         self.nx, self.ny = grid_size
         self.qtd_obstacles = obstacles
