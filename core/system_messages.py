@@ -32,8 +32,8 @@ class SystemMessages():
         )
 
     def generic_message(self):
-        popup_width = 250
-        popup_height = 160
+        popup_width = 300
+        popup_height = 200
         popup_x = (self.window_width - popup_width) // 2
         popup_y = (self.window_height - popup_height) // 2
 
@@ -46,5 +46,5 @@ class SystemMessages():
                 "We hope you enjoy it!"
             ),
             manager = self.manager,
-            window_title = "Thank you so much"
+            window_title = "Thank you so much!"
         )
