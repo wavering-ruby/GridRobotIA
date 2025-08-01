@@ -31,7 +31,7 @@ class SystemMessages():
             window_title = "Caminho Incompleto"
         )
 
-    def generic_message(self):
+    def start_message(self):
         popup_width = 300
         popup_height = 200
         popup_x = (self.window_width - popup_width) // 2
