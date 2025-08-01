@@ -30,3 +30,21 @@ class SystemMessages():
             manager = self.manager,
             window_title = "Caminho Incompleto"
         )
+
+    def generic_message(self):
+        popup_width = 250
+        popup_height = 160
+        popup_x = (self.window_width - popup_width) // 2
+        popup_y = (self.window_height - popup_height) // 2
+
+        pygame_gui.windows.UIMessageWindow(
+            rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
+            html_message = (
+                f"Hello! <br><br>"
+                "Thanks for trying this project. This project was created by <b>Mateus Gabriel</b>"
+                "together with <b>Caio Viana</b>, under the guidance of our teacher <b> Luis Fernando de Almeida</b>"
+                "We hope you enjoy it!"
+            ),
+            manager = self.manager,
+            window_title = "Thank you so much"
+        )
