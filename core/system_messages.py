@@ -42,7 +42,7 @@ class SystemMessages():
             html_message = (
                 f"Hello! <br><br>"
                 "Thanks for trying this project. This project was created by <b>Mateus Gabriel</b>"
-                "together with <b>Caio Viana</b>, under the guidance of our teacher <b> Luis Fernando de Almeida</b>"
+                "together with <b>Caio Viana</b>, under the guidance of our teacher <b> Luis Fernando de Almeida</b><br><br>"
                 "We hope you enjoy it!"
             ),
             manager = self.manager,
