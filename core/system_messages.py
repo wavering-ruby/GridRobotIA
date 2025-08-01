@@ -32,8 +32,8 @@ class SystemMessages():
         )
 
     def start_message(self):
-        popup_width = 300
-        popup_height = 200
+        popup_width = 500
+        popup_height = 260
         popup_x = (self.window_width - popup_width) // 2
         popup_y = (self.window_height - popup_height) // 2
 
@@ -41,7 +41,7 @@ class SystemMessages():
             rect = pygame.Rect((popup_x, popup_y), (popup_width, popup_height)),
             html_message = (
                 f"Hello! <br><br>"
-                "Thanks for trying this project. This project was created by <b>Mateus Gabriel</b>"
+                "Thanks for trying this project. This project was created by <b>Mateus Gabriel </b>"
                 "together with <b>Caio Viana</b>, under the guidance of our teacher <b> Luis Fernando de Almeida</b><br><br>"
                 "We hope you enjoy it!"
             ),
