@@ -406,6 +406,21 @@ class UserInterface:
         self.button_decrease_grid.visible = self.fullscreen
         self.button_apply_grid.visible = self.fullscreen
 
+    def resize_screen(self):
+        self.grid_size_pixels = 30 * max(self.nx, self.ny)
+        width = self.grid_size_pixels + self.menu_width
+        height = self.grid_size_pixels
+
+        if self.fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+
+        self.manager.set_window_resolution(self.screen.get_size())
+        self.manager.clear_and_reset()
+        self.recreate_menu_elements()
+
+
     def run(self):
         """
             Loop principal
