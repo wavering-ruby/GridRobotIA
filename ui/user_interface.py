@@ -435,14 +435,24 @@ class UserInterface:
                     elif event.key == pygame.K_F11:
                         self.fullscreen = not self.fullscreen
 
-                        if(self.fullscreen):
+                        if self.fullscreen:
                             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
                         else:
-                            self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+                            self.screen = pygame.display.set_mode(
+                                (self.grid_size_pixels + self.menu_width, self.grid_size_pixels),
+                                pygame.RESIZABLE
+                            )
 
                         self.manager.set_window_resolution(self.screen.get_size())
                         self.manager.clear_and_reset()
+
                         self.recreate_menu_elements()
+
+                        self.input_grid_size.set_visible(self.fullscreen)
+                        self.label_grid_size.set_visible(self.fullscreen)
+                        self.button_apply_grid.set_visible(self.fullscreen)
+                        self.button_increase_grid.set_visible(self.fullscreen)
+                        self.button_decrease_grid.set_visible(self.fullscreen)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     # Verifica cliques nos botões do menu
