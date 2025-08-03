@@ -8,6 +8,9 @@ from core.system_messages import SystemMessages
 
 class UserInterface:
     def __init__(self, grid_size = (10, 10), obstacles = 20):
+        # Configurações para fullscreen
+        self.fullscreen = False
+
         # Configurações da grid
         self.nx, self.ny = grid_size
         self.qtd_obstacles = obstacles
@@ -140,6 +143,9 @@ class UserInterface:
             text = 'Iniciar',
             manager = self.manager
         )
+
+        # Botão para aumentar a grid 
+        self
     
     def draw_button(self, text, rect, font):
         pygame.draw.rect(self.screen, (70, 70, 70), rect, border_radius = 8)
@@ -385,7 +391,18 @@ class UserInterface:
                     if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
                         if 80 <= my <= 120:
                             self.reset_grid()
-                
+                elif event.key == pygame.K_F11:
+                    self.fullscreen = not self.fullscreen
+
+                    if(self.fullscreen):
+                        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                    else:
+                        self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+
+                    self.manager.set_window_resolution(self.screen.get_size())
+                    self.manager.clear_and_reset()
+                    self.recreate_menu_elements()
+                    
                 elif event.type == pygame.VIDEORESIZE:
                     width, height = event.size
                     self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
