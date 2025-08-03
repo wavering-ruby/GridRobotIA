@@ -144,8 +144,40 @@ class UserInterface:
             manager = self.manager
         )
 
-        # Botão para aumentar a grid 
-        self
+        # Botões para aumentar a grid 
+        self.input_grid_size = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 460), (160, 30)),
+            manager = self.manager,
+            visible = self.fullscreen
+        )
+
+        self.label_grid_size = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 440), (160, 20)),
+            text = "Tamanho da Grid (NxM):",
+            manager = self.manager,
+            visible = self.fullscreen
+        )
+
+        self.button_apply_grid = pygame_gui.elements.UIButton(
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 500), (160, 30)),
+            text = 'Aplicar Tamanho',
+            manager = self.manager,
+            visible = self.fullscreen
+        )
+
+        self.button_increase_grid = pygame_gui.elements.UIButton(
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 540), (160, 30)),
+            text = 'Aumentar Grid',
+            manager = self.manager,
+            visible = self.fullscreen
+        )
+
+        self.button_decrease_grid = pygame_gui.elements.UIButton(
+            relative_rect = pygame.Rect((self.base_x, self.base_y + 580), (160, 30)),
+            text = 'Diminuir Grid',
+            manager = self.manager,
+            visible = self.fullscreen
+        )
     
     def draw_button(self, text, rect, font):
         pygame.draw.rect(self.screen, (70, 70, 70), rect, border_radius = 8)
@@ -368,7 +400,12 @@ class UserInterface:
         self.label_limit.set_relative_position((base_x, base_y + 250))
         self.input_limit.set_relative_position((base_x, base_y + 270))
         self.botao_ler_texto.set_relative_position((base_x, base_y + 320))
-    
+        self.label_grid_size.visible = self.fullscreen
+        self.input_grid_size.visible = self.fullscreen
+        self.button_increase_grid.visible = self.fullscreen
+        self.button_decrease_grid.visible = self.fullscreen
+        self.button_apply_grid.visible = self.fullscreen
+
     def run(self):
         """
             Loop principal
@@ -385,24 +422,24 @@ class UserInterface:
                         running = False
                     elif event.key == pygame.K_r:
                         self.reset_grid()
+                    elif event.key == pygame.K_F11:
+                        self.fullscreen = not self.fullscreen
+
+                        if(self.fullscreen):
+                            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                        else:
+                            self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
+
+                        self.manager.set_window_resolution(self.screen.get_size())
+                        self.manager.clear_and_reset()
+                        self.recreate_menu_elements()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     # Verifica cliques nos botões do menu
                     if self.grid_size_pixels + 20 <= mx <= self.grid_size_pixels + 180:
                         if 80 <= my <= 120:
                             self.reset_grid()
-                elif event.key == pygame.K_F11:
-                    self.fullscreen = not self.fullscreen
 
-                    if(self.fullscreen):
-                        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-                    else:
-                        self.screen = pygame.display.set_mode((self.grid_size_pixels + self.menu_width, self.grid_size_pixels), pygame.RESIZABLE)
-
-                    self.manager.set_window_resolution(self.screen.get_size())
-                    self.manager.clear_and_reset()
-                    self.recreate_menu_elements()
-                    
                 elif event.type == pygame.VIDEORESIZE:
                     width, height = event.size
                     self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
@@ -435,6 +472,38 @@ class UserInterface:
                         self.update_algorithm_dropdown()
                 
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                    if(event.ui_element == self.button_increase_grid):
+                        self.nx += 2
+                        self.ny += 2
+                        self.ex = self.nx - 1
+                        self.ey = self.ny - 1
+                        self.reset_grid()
+                        self.resize_screen()
+
+                    if event.ui_element == self.button_decrease_grid:
+                        if self.nx > 4 and self.ny > 4:
+                            self.nx -= 2
+                            self.ny -= 2
+                            self.ex = self.nx - 1
+                            self.ey = self.ny - 1
+                            self.reset_grid()
+                            self.resize_screen()
+
+                    if event.ui_element == self.button_apply_grid:
+                        texto = self.input_grid_size.get_text().strip().lower()
+                        if 'x' in texto:
+                            try:
+                                nx, ny = map(int, texto.split('x'))
+                                if nx >= 4 and ny >= 4:
+                                    self.nx = nx
+                                    self.ny = ny
+                                    self.ex = self.nx - 1
+                                    self.ey = self.ny - 1
+                                    self.reset_grid()
+                                    self.resize_screen()
+                            except:
+                                print("Entrada inválida para grid.")
+
                     if event.ui_element == self.botao_ler_texto:
                         starting_pos = self.input_text.get_text()
                         
