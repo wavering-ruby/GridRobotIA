@@ -147,36 +147,31 @@ class UserInterface:
         # Botões para aumentar a grid 
         self.input_grid_size = pygame_gui.elements.UITextEntryLine(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 460), (160, 30)),
-            manager = self.manager,
-            visible = self.fullscreen
+            manager = self.manager
         )
 
         self.label_grid_size = pygame_gui.elements.UILabel(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 440), (160, 20)),
             text = "Tamanho da Grid (NxM):",
-            manager = self.manager,
-            visible = self.fullscreen
+            manager = self.manager
         )
 
         self.button_apply_grid = pygame_gui.elements.UIButton(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 500), (160, 30)),
             text = 'Aplicar Tamanho',
-            manager = self.manager,
-            visible = self.fullscreen
+            manager = self.manager
         )
 
         self.button_increase_grid = pygame_gui.elements.UIButton(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 540), (160, 30)),
             text = 'Aumentar Grid',
-            manager = self.manager,
-            visible = self.fullscreen
+            manager = self.manager
         )
 
         self.button_decrease_grid = pygame_gui.elements.UIButton(
             relative_rect = pygame.Rect((self.base_x, self.base_y + 580), (160, 30)),
             text = 'Diminuir Grid',
-            manager = self.manager,
-            visible = self.fullscreen
+            manager = self.manager
         )
     
     def draw_button(self, text, rect, font):
