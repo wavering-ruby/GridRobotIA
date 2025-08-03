@@ -10,5 +10,6 @@ setup(
         "pygame", 
         "pygame_gui",
         "numpy"
-    ]
+    ],
+    authors = ["Mateus G. M. de Paula", "Caio Viana de Jesus"]
 )
