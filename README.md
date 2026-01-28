@@ -1,6 +1,6 @@
 # GridRobotIA
  
-# 👥 Developers
+# Developers
 
 | Profile Picture | Developer |
 |---------------|------------|
